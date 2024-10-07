@@ -25,7 +25,7 @@ $requestInfo = [
     'BODY' => json_decode(file_get_contents('php://input'), true) ?? null,
 ];
 
-error_log("ENDPOINT: {$requestInfo['ENDPOINT']}. METHOD: $requestMethod");
+error_log("ENDPOINT: {$requestInfo['ENDPOINT']}. METHOD: $requestMethod.");
 $requestHandler = new RequestHandler($requestInfo);
 $response = $requestHandler->getResponse();
 

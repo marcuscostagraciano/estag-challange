@@ -99,9 +99,9 @@ class Categories
                 break;
 
             case 'POST':
-                if ($categoryName && isset($tax))
+                if (!(is_null($categoryName) && is_null($tax)))
                     return self::createCategory($categoryName, $tax);
-                break;
+                return ResponseHandler::handleResponse(400, responseMessage: 'Bad request');
 
             case 'DELETE':
                 if (!is_null($codeToConsult))
@@ -109,7 +109,7 @@ class Categories
                 break;
 
             default:
-                return ResponseHandler::handleResponse(405, responseMessage: 'Method Not Allowed');
+                return ResponseHandler::handleResponse(405, responseMessage: 'Method not allowed');
         }
     }
 }

@@ -120,8 +120,9 @@ class Orders
                 break;
 
             case 'POST':
-                return self::createOrder($total, $tax);
-                break;
+                if (!(is_null($total) && is_null($tax)))
+                    return self::createOrder($total, $tax);
+                return ResponseHandler::handleResponse(400, responseMessage: 'Bad request');
 
             case 'PUT':
                 return self::putOrder($codeToConsult, $total, $tax);
@@ -135,7 +136,7 @@ class Orders
                 //         return self::deleteOrder($codeToConsult);
 
             default:
-                return ResponseHandler::handleResponse(405, responseMessage: 'Method Not Allowed');
+                return ResponseHandler::handleResponse(405, responseMessage: 'Method not allowed');
         }
     }
 }

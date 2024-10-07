@@ -155,10 +155,10 @@ class Products
                 break;
 
             case 'POST':
-                if ($productName && $amount && isset($unit_price) && $category) {
+                if (!(is_null($productName) && is_null($amount) && is_null($unit_price) && is_null($category))) {
                     return self::createProduct($productName, $amount, $unit_price, $category);
                 }
-                break;
+                return ResponseHandler::handleResponse(400, responseMessage: 'Bad request');
 
             case 'PATCH':
                 if ($codeToConsult && isset($amount) && isset($unit_price))
@@ -173,7 +173,7 @@ class Products
                 break;
 
             default:
-                return ResponseHandler::handleResponse(405, responseMessage: 'Method Not Allowed');
+                return ResponseHandler::handleResponse(405, responseMessage: 'Method not allowed');
         }
     }
 }

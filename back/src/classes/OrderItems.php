@@ -132,8 +132,6 @@ class OrderItems
         $orderCode = $request_info['BODY']['order_code'] ?? null;
         $productCode = $request_info['BODY']['product_code'] ?? null;
         $amount = $request_info['BODY']['amount'] ?? null;
-        $price = $request_info['BODY']['price'] ?? null;
-        $tax = $request_info['BODY']['tax'] ?? null;
 
         switch ($method) {
             case 'GET':
@@ -143,8 +141,9 @@ class OrderItems
                 break;
 
             case 'POST':
-                return self::createOrderItem($orderCode, $productCode, $amount);
-                break;
+                if (!(is_null($orderCode) && is_null($productCode) && is_null($amount)))
+                    return self::createOrderItem($orderCode, $productCode, $amount);
+                return ResponseHandler::handleResponse(400, responseMessage: 'Bad request');
 
                 // case 'DELETE':
                 //     if ($codeToConsult)
