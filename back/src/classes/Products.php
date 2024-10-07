@@ -38,7 +38,7 @@ class Products
             'unit_price' => $unit_price,
             'category' => $category_code,
         ];
-        return ResponseHandler::handleResponse(201, response_array: $insert_data);
+        return ResponseHandler::handleResponse(201, responseArray: $insert_data);
     }
 
     private static function readProducts(): array
@@ -49,7 +49,7 @@ class Products
         } catch (PDOException $e) {
             //throw $th;
         }
-        return ResponseHandler::handleResponse(200, response_array: $result ?? []);
+        return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
     }
 
     private static function readProduct(int $product_code): array
@@ -62,7 +62,7 @@ class Products
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            return $result ? $result : ResponseHandler::handleResponse(404, response_message: 'Not Found');
+            return $result ? $result : ResponseHandler::handleResponse(404, responseMessage: 'Product not found');
         } catch (PDOException $e) {
             //throw $th;
         }
@@ -84,7 +84,7 @@ class Products
             //throw $th;
         }
 
-        return ResponseHandler::handleResponse(200, response_message: 'Successfully deleted');
+        return ResponseHandler::handleResponse(200, responseMessage: 'Successfully deleted');
     }
 
     private static function patchProduct(int $product_code, int $amount, float $price): ?array
@@ -110,7 +110,7 @@ class Products
             'amount' => $amount,
             'price' => $price,
         ];
-        return ResponseHandler::handleResponse(200, response_array: $put_data);
+        return ResponseHandler::handleResponse(200, responseArray: $put_data);
     }
 
     private static function patchProductAmount(int $product_code, int $amount): ?array
@@ -134,7 +134,7 @@ class Products
             'product_code' => $product_code,
             'amount' => $amount,
         ];
-        return ResponseHandler::handleResponse(200, response_array: $put_data);
+        return ResponseHandler::handleResponse(200, responseArray: $put_data);
     }
 
     public static function handleProductRequest(array $request_info): ?array
@@ -173,7 +173,7 @@ class Products
                 break;
 
             default:
-                return ResponseHandler::handleResponse(405, response_message: 'Method Not Allowed');
+                return ResponseHandler::handleResponse(405, responseMessage: 'Method Not Allowed');
         }
     }
 }

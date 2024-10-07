@@ -34,7 +34,7 @@ class Orders
             'total' => $total,
             'tax' => $tax,
         ];
-        return ResponseHandler::handleResponse(201, response_array: $insert_data);
+        return ResponseHandler::handleResponse(201, responseArray: $insert_data);
     }
 
     private static function readOrders(): array
@@ -45,7 +45,7 @@ class Orders
         } catch (PDOException $e) {
             //throw $th;
         }
-        return ResponseHandler::handleResponse(200, response_array: $result ?? []);
+        return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
     }
 
     private static function readOrder(int $order_code): array
@@ -58,7 +58,7 @@ class Orders
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            return $result ? $result : ResponseHandler::handleResponse(404, response_message: 'Not Found');
+            return $result ? $result : ResponseHandler::handleResponse(404, responseMessage: 'Order not Found');
         } catch (PDOException $e) {
             //throw $th;
         }
@@ -80,7 +80,7 @@ class Orders
     //         //throw $th;
     //     }
 
-    //     return ResponseHandler::handleResponse(200, response_message: 'Successfully deleted');
+    //     return ResponseHandler::handleResponse(200, responseMessage: 'Successfully deleted');
     // }
 
     private static function putOrder(int $orderCode, float $total, float $tax): ?array
@@ -101,7 +101,7 @@ class Orders
             //throw $th;
         }
 
-        return ResponseHandler::handleResponse(200, response_message: 'Successfully put');
+        return ResponseHandler::handleResponse(200, responseMessage: 'Successfully put');
     }
 
     public static function handleOrderRequest(array $request_info): array
@@ -135,7 +135,7 @@ class Orders
                 //         return self::deleteOrder($codeToConsult);
 
             default:
-                return ResponseHandler::handleResponse(405, response_message: 'Method Not Allowed');
+                return ResponseHandler::handleResponse(405, responseMessage: 'Method Not Allowed');
         }
     }
 }

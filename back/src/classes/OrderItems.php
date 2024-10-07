@@ -18,6 +18,7 @@ class OrderItems
             $category = Categories::handleCategoryRequest(['METHOD' => 'GET', 'ID_TO_CONSULT' => $product['category_code']]);
             $productPrice = floatval($product['price']);
             $categoryTax = floatval($category['tax']) / 100;
+            $productTax = $productPrice * $categoryTax;
 
             $sql = "
             INSERT INTO
@@ -40,14 +41,6 @@ class OrderItems
 
             $stmt->execute();
 
-            // NÃO FUNCIONA DPS DO EXECUTE!!!!!!!!!!!!!!
-            // ESTOU FAZENDO ISSO PARA PODER PASSAR APENAS O CÓDIGO DO PEDIDO, PRODUTO E QUANTIDADE!
-            // TIRAR RESPONSABILIDADES DO FRONT
-            // APÓS ISSO, ESTOU ALTERANDO O PEDIDO (ADICIONANDO VALOR E TAXA)
-            // TAMBÉM FALTA DECREMENTAR O NÚMERO DE PRODUTOS!!!!!!!!!!!
-
-
-
             Products::handleProductRequest(
                 [
                     'METHOD' => 'PATCH',
@@ -57,7 +50,6 @@ class OrderItems
                     ]
                 ]
             );
-            $productTax = $productPrice * $categoryTax;
 
             Orders::handleOrderRequest(
                 [
@@ -79,7 +71,7 @@ class OrderItems
                 'product_code' => $product_code,
                 'amount' => $amount,
             ];
-            return ResponseHandler::handleResponse(201, response_array: $insert_data);
+            return ResponseHandler::handleResponse(201, responseArray: $insert_data);
         } catch (PDOException $e) {
             //throw $th;
         }
@@ -93,7 +85,7 @@ class OrderItems
         } catch (PDOException $e) {
             //throw $th;
         }
-        return ResponseHandler::handleResponse(200, response_array: $result ?? []);
+        return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
     }
 
     private static function readOrderItem(int $order_code): array
@@ -106,7 +98,7 @@ class OrderItems
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            return $result ? $result : ResponseHandler::handleResponse(404, response_message: 'Not Found');
+            return $result ? $result : ResponseHandler::handleResponse(404, responseMessage: 'Order_item not found');
         } catch (PDOException $e) {
             //throw $th;
         }
@@ -128,7 +120,7 @@ class OrderItems
             //throw $th;
         }
 
-        return ResponseHandler::handleResponse(200, response_message: 'Successfully deleted');
+        return ResponseHandler::handleResponse(200, responseMessage: 'Successfully deleted');
     }
 
     public static function handleOrderItemRequest(array $request_info): array | object
@@ -159,7 +151,7 @@ class OrderItems
                 //         return self::deleteOrderItem($codeToConsult);
 
             default:
-                return ResponseHandler::handleResponse(405, response_message: 'Method Not Allowed');
+                return ResponseHandler::handleResponse(405, responseMessage: 'Method Not Allowed');
         }
     }
 }

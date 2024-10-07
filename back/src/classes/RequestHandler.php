@@ -45,7 +45,7 @@ class RequestHandler
                     break;
 
                 default:
-                    return ResponseHandler::handleResponse(404, response_message: 'Endpoint Not found');
+                    return ResponseHandler::handleResponse(404, responseMessage: 'Endpoint Not found');
             }
     }
 }
