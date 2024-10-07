@@ -1,32 +1,30 @@
+
 <?php
+error_log('Sou um log');
+echo "Olá mundo";
 
-// CONTROLLER
-declare(strict_types=1);
-header('Access-Control-Allow-Header: *');
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json; charset=UTF-8');
 
-// 'Require' gera um erro fatal. 'Include' gera um aviso (warning)
-require_once('classes/autoload.php');
+$host = "pgsql_desafio";
+$db = "applicationphp";
+$user = "root";
+$pw = "root";
 
-if (isset($_SERVER['REDIRECT_URL'])) {
-    $redirectURL = explode('/', $_SERVER['REDIRECT_URL']);
-    $endpoint = $redirectURL[1] ?? null;
-    $itemID = $redirectURL[2] ?? null;
-}
-$requestMethod = $_SERVER['REQUEST_METHOD'];
-// $params = explode('&', $_SERVER['QUERY_STRING']);
+$myPDO = new PDO("pgsql:host=$host;dbname=$db", $user, $pw);
 
-$requestInfo = [
-    'METHOD' => $requestMethod,
-    'ENDPOINT' => $endpoint ?? null,
-    'ID_TO_CONSULT' => $itemID ?? null,
-    'PARAMS' => $_REQUEST,
-    'BODY' => json_decode(file_get_contents('php://input'), true) ?? null,
-];
+// exemplo de insert
+$statement = $myPDO->prepare("INSERT INTO mytable (DESCRIPTION) VALUES ('TEST PHP')");
+$statement->execute();
 
-error_log("ENDPOINT: {$requestInfo['ENDPOINT']}. METHOD: $requestMethod");
-$requestHandler = new RequestHandler($requestInfo);
-$response = $requestHandler->getResponse();
+// exemplo de fetch
+$statement1 = $myPDO->query("SELECT * FROM mytable");
+$data = $statement1->fetch();
 
-echo json_encode($response, JSON_NUMERIC_CHECK);
+echo "<br>";
+print_r($data);
+
+// exemplo de fetch2
+$statement2 = $myPDO->query("SELECT * FROM mytable");
+$data2 = $statement2->fetchALL();
+
+echo "<br>";
+print_r($data2);
