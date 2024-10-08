@@ -33,7 +33,7 @@ class Orders
             ];
             return ResponseHandler::handleResponse(201, responseArray: $insert_data);
         } catch (PDOException $e) {
-            //throw $th;
+            return PDOExceptionHandler::handleException($e);
         }
     }
 
@@ -45,7 +45,7 @@ class Orders
 
             return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
         } catch (PDOException $e) {
-            //throw $th;
+            return PDOExceptionHandler::handleException($e);
         }
     }
 
@@ -61,7 +61,7 @@ class Orders
 
             return $result ? $result : ResponseHandler::handleResponse(404, responseMessage: 'Order not Found');
         } catch (PDOException $e) {
-            //throw $th;
+            return PDOExceptionHandler::handleException($e);
         }
     }
 
@@ -78,7 +78,7 @@ class Orders
 
     //         self::$conn->commit();
     //     } catch (PDOException $e) {
-    //         //throw $th;
+    //         return PDOExceptionHandler::handleException($e);
     //     }
 
     //     return ResponseHandler::handleResponse(200, responseMessage: 'Successfully deleted');
@@ -105,7 +105,7 @@ class Orders
 
             return ResponseHandler::handleResponse(200, responseMessage: 'Successfully put');
         } catch (PDOException $e) {
-            //throw $th;
+            return PDOExceptionHandler::handleException($e);
         }
     }
 

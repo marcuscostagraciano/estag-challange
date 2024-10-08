@@ -73,7 +73,7 @@ class OrderItems
             ];
             return ResponseHandler::handleResponse(201, responseArray: $insert_data);
         } catch (PDOException $e) {
-            //throw $th;
+            return PDOExceptionHandler::handleException($e);
         }
     }
 
@@ -85,7 +85,7 @@ class OrderItems
 
             return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
         } catch (PDOException $e) {
-            //throw $th;
+            return PDOExceptionHandler::handleException($e);
         }
     }
 
@@ -101,7 +101,7 @@ class OrderItems
 
             return $result ? $result : ResponseHandler::handleResponse(404, responseMessage: 'Order_item not found');
         } catch (PDOException $e) {
-            //throw $th;
+            return PDOExceptionHandler::handleException($e);
         }
     }
 
@@ -120,7 +120,7 @@ class OrderItems
 
             return ResponseHandler::handleResponse(200, responseMessage: 'Successfully deleted');
         } catch (PDOException $e) {
-            //throw $th;
+            return PDOExceptionHandler::handleException($e);
         }
     }
 

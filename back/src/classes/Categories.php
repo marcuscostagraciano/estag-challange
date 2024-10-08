@@ -33,7 +33,7 @@ class Categories
             ];
             return ResponseHandler::handleResponse(201, responseArray: $insert_data);
         } catch (PDOException $e) {
-            //throw $th;
+            return PDOExceptionHandler::handleException($e);
         }
     }
 
@@ -45,7 +45,7 @@ class Categories
 
             return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
         } catch (PDOException $e) {
-            //throw $th;
+            return PDOExceptionHandler::handleException($e);
         }
     }
 
@@ -61,7 +61,7 @@ class Categories
 
             return $result ? $result : ResponseHandler::handleResponse(404, responseMessage: 'Category not found');
         } catch (PDOException $e) {
-            //throw $th;
+            return PDOExceptionHandler::handleException($e);
         }
     }
 
@@ -83,7 +83,8 @@ class Categories
             self::$conn->commit();
             return ResponseHandler::handleResponse(200, responseMessage: 'Successfully deleted');
         } catch (PDOException $e) {
-            //throw $th;
+            return PDOExceptionHandler::handleException($e);
+            return PDOExceptionHandler::handleException($e);
         }
     }
 
