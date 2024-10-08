@@ -27,18 +27,18 @@ class Products
 
             $last_code = self::$conn->lastInsertId();
             self::$conn->commit();
+
+            $insert_data = [
+                'code' => $last_code,
+                'name' => $name,
+                'amount' => $amount,
+                'unit_price' => $unit_price,
+                'category' => $category_code,
+            ];
+            return ResponseHandler::handleResponse(201, responseArray: $insert_data);
         } catch (PDOException $e) {
             //throw $th;
         }
-
-        $insert_data = [
-            'code' => $last_code,
-            'name' => $name,
-            'amount' => $amount,
-            'unit_price' => $unit_price,
-            'category' => $category_code,
-        ];
-        return ResponseHandler::handleResponse(201, responseArray: $insert_data);
     }
 
     private static function readProducts(): array
@@ -46,10 +46,11 @@ class Products
         try {
             $stmt = self::$conn->query('SELECT * FROM products ORDER BY code ASC');
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
         } catch (PDOException $e) {
             //throw $th;
         }
-        return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
     }
 
     private static function readProduct(int $product_code): array
@@ -70,6 +71,10 @@ class Products
 
     private static function deleteProduct(int $product_code): array
     {
+        $product = self::readProduct($product_code);
+        if (isset($product['status']))
+            return $product;
+
         $sql = 'DELETE FROM products WHERE code = :product_code';
 
         try {
@@ -89,6 +94,10 @@ class Products
 
     private static function patchProduct(int $product_code, int $amount, float $price): ?array
     {
+        $product = self::readProduct($product_code);
+        if (isset($product['status']))
+            return $product;
+
         $sql = 'UPDATE products SET amount = :amount, price = :price WHERE code = :product_code';
 
         try {
@@ -101,20 +110,24 @@ class Products
             $stmt->execute();
 
             self::$conn->commit();
+
+            $put_data = [
+                'product_code' => $product_code,
+                'amount' => $amount,
+                'price' => $price,
+            ];
+            return ResponseHandler::handleResponse(200, responseArray: $put_data);
         } catch (PDOException $e) {
             //throw $th;
         }
-
-        $put_data = [
-            'product_code' => $product_code,
-            'amount' => $amount,
-            'price' => $price,
-        ];
-        return ResponseHandler::handleResponse(200, responseArray: $put_data);
     }
 
     private static function patchProductAmount(int $product_code, int $amount): ?array
     {
+        $product = self::readProduct($product_code);
+        if (isset($product['status']))
+            return $product;
+
         $sql = 'UPDATE products SET amount = (amount - :amount) WHERE code = :product_code';
 
         try {
@@ -126,18 +139,18 @@ class Products
             $stmt->execute();
 
             self::$conn->commit();
+
+            $patchData = [
+                'product_code' => $product_code,
+                'amount' => $amount,
+            ];
+            return ResponseHandler::handleResponse(200, responseArray: $patchData);
         } catch (PDOException $e) {
             //throw $th;
         }
-
-        $put_data = [
-            'product_code' => $product_code,
-            'amount' => $amount,
-        ];
-        return ResponseHandler::handleResponse(200, responseArray: $put_data);
     }
 
-    public static function handleProductRequest(array $request_info): ?array
+    public static function handleProductRequest(array $request_info): array
     {
         self::initializeConnection();
         $method = $request_info['METHOD'];
@@ -146,6 +159,7 @@ class Products
         $amount = $request_info['BODY']['amount'] ?? null;
         $unit_price = $request_info['BODY']['price'] ?? null;
         $category = $request_info['BODY']['category_code'] ?? null;
+
         switch ($method) {
             case 'GET':
                 if ($codeToConsult) {
@@ -161,9 +175,10 @@ class Products
                 return ResponseHandler::handleResponse(400, responseMessage: 'Bad request');
 
             case 'PATCH':
-                if ($codeToConsult && isset($amount) && isset($unit_price))
-                    return self::patchProduct($codeToConsult, $amount, $unit_price);
-                else if ($codeToConsult && isset($amount))
+                // if ($codeToConsult && isset($amount) && isset($unit_price))
+                //     return self::patchProduct($codeToConsult, $amount, $unit_price);
+                // else 
+                if ($codeToConsult && isset($amount))
                     return self::patchProductAmount($codeToConsult, $amount);
                 break;
 

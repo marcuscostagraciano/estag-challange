@@ -25,16 +25,16 @@ class Orders
 
             $last_code = self::$conn->lastInsertId();
             self::$conn->commit();
+
+            $insert_data = [
+                'code' => $last_code,
+                'total' => $total,
+                'tax' => $tax,
+            ];
+            return ResponseHandler::handleResponse(201, responseArray: $insert_data);
         } catch (PDOException $e) {
             //throw $th;
         }
-
-        $insert_data = [
-            'code' => $last_code,
-            'total' => $total,
-            'tax' => $tax,
-        ];
-        return ResponseHandler::handleResponse(201, responseArray: $insert_data);
     }
 
     private static function readOrders(): array
@@ -42,10 +42,11 @@ class Orders
         try {
             $stmt = self::$conn->query('SELECT * FROM orders ORDER BY code ASC');
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
         } catch (PDOException $e) {
             //throw $th;
         }
-        return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
     }
 
     private static function readOrder(int $order_code): array
@@ -85,6 +86,10 @@ class Orders
 
     private static function putOrder(int $orderCode, float $total, float $tax): ?array
     {
+        $order = self::readOrder($orderCode);
+        if (isset($order['status']))
+            return $order;
+
         $sql = 'UPDATE orders SET total = total + :total, tax = tax + :tax WHERE code = :orderCode';
 
         try {
@@ -97,11 +102,11 @@ class Orders
             $stmt->execute();
 
             self::$conn->commit();
+
+            return ResponseHandler::handleResponse(200, responseMessage: 'Successfully put');
         } catch (PDOException $e) {
             //throw $th;
         }
-
-        return ResponseHandler::handleResponse(200, responseMessage: 'Successfully put');
     }
 
     public static function handleOrderRequest(array $request_info): array

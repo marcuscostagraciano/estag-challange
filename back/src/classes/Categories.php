@@ -25,16 +25,16 @@ class Categories
             $stmt->execute();
             $last_code = self::$conn->lastInsertId();
             self::$conn->commit();
+
+            $insert_data = [
+                'code' => $last_code,
+                'name' => $name,
+                'tax' => $tax,
+            ];
+            return ResponseHandler::handleResponse(201, responseArray: $insert_data);
         } catch (PDOException $e) {
             //throw $th;
         }
-
-        $insert_data = [
-            'code' => $last_code,
-            'name' => $name,
-            'tax' => $tax,
-        ];
-        return ResponseHandler::handleResponse(201, responseArray: $insert_data);
     }
 
     private static function readCategories(): array
@@ -42,10 +42,11 @@ class Categories
         try {
             $stmt = self::$conn->query('SELECT * FROM categories ORDER BY code ASC');
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
         } catch (PDOException $e) {
             //throw $th;
         }
-        return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
     }
 
     private static function readCategory(int $category_code): array
@@ -66,6 +67,10 @@ class Categories
 
     private static function deleteCategory(int $category_code): array
     {
+        $category = self::readCategory($category_code);
+        if (isset($category['status']))
+            return $category;
+
         $sql = 'DELETE FROM categories WHERE code = :category_code';
 
         try {
@@ -76,11 +81,10 @@ class Categories
             $stmt->execute();
 
             self::$conn->commit();
+            return ResponseHandler::handleResponse(200, responseMessage: 'Successfully deleted');
         } catch (PDOException $e) {
             //throw $th;
         }
-
-        return ResponseHandler::handleResponse(200, responseMessage: 'Successfully deleted');
     }
 
     public static function handleCategoryRequest(array $requestInfo): array

@@ -82,10 +82,11 @@ class OrderItems
         try {
             $stmt = self::$conn->query('SELECT * FROM order_item ORDER BY code ASC');
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
         } catch (PDOException $e) {
             //throw $th;
         }
-        return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
     }
 
     private static function readOrderItem(int $order_code): array
@@ -116,14 +117,14 @@ class OrderItems
             $stmt->execute();
 
             self::$conn->commit();
+
+            return ResponseHandler::handleResponse(200, responseMessage: 'Successfully deleted');
         } catch (PDOException $e) {
             //throw $th;
         }
-
-        return ResponseHandler::handleResponse(200, responseMessage: 'Successfully deleted');
     }
 
-    public static function handleOrderItemRequest(array $request_info): array | object
+    public static function handleOrderItemRequest(array $request_info): array
     {
         self::initializeConnection();
         $method = $request_info['METHOD'];
