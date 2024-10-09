@@ -16,9 +16,10 @@ class OrderItems
         try {
             $product = Products::handleProductRequest(['METHOD' => 'GET', 'ID_TO_CONSULT' => $product_code]);
             $category = Categories::handleCategoryRequest(['METHOD' => 'GET', 'ID_TO_CONSULT' => $product['category_code']]);
-            $productPrice = floatval($product['price']);
+            $productPrice = floatval($product['price']) * $amount;
             $categoryTax = floatval($category['tax']) / 100;
             $productTax = $productPrice * $categoryTax;
+            $totalPrice = $productPrice + $productTax;
 
             $sql = "
             INSERT INTO
@@ -57,7 +58,7 @@ class OrderItems
                     'ID_TO_CONSULT' => $order_code,
                     'BODY' => [
                         'tax' => $productTax,
-                        'total' => $productPrice
+                        'total' => $totalPrice
                     ]
                 ]
             );
