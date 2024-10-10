@@ -29,8 +29,8 @@ class OrderItems
                 :order_code, 
                 :product_code, 
                 :amount, 
-                :amount * $productPrice, 
-                :amount * $productPrice * $categoryTax
+                $productPrice, 
+                $productPrice * $categoryTax
                 )";
 
             self::$conn->beginTransaction();
@@ -42,27 +42,6 @@ class OrderItems
 
             $stmt->execute();
 
-            Products::handleProductRequest(
-                [
-                    'METHOD' => 'PATCH',
-                    'ID_TO_CONSULT' => $product_code,
-                    'BODY' => [
-                        'amount' => $amount
-                    ]
-                ]
-            );
-
-            Orders::handleOrderRequest(
-                [
-                    'METHOD' => 'PUT',
-                    'ID_TO_CONSULT' => $order_code,
-                    'BODY' => [
-                        'tax' => $productTax,
-                        'total' => $totalPrice
-                    ]
-                ]
-            );
-
             $last_code = self::$conn->lastInsertId();
             self::$conn->commit();
 
@@ -71,6 +50,8 @@ class OrderItems
                 'order_code' => $order_code,
                 'product_code' => $product_code,
                 'amount' => $amount,
+                'price' => $productPrice,
+                'tax' => $productTax,
             ];
             return ResponseHandler::handleResponse(201, responseArray: $insert_data);
         } catch (PDOException $e) {

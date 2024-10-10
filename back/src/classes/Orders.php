@@ -90,6 +90,7 @@ class Orders
         if (isset($order['status']))
             return $order;
 
+
         $sql = 'UPDATE orders SET total = total + :total, tax = tax + :tax WHERE code = :orderCode';
 
         try {
@@ -103,7 +104,12 @@ class Orders
 
             self::$conn->commit();
 
-            return ResponseHandler::handleResponse(200, responseMessage: 'Successfully put');
+            $putData = [
+                'code' => $orderCode,
+                'total' => $order['total'] + $total,
+                'tax' => $order['tax'] + $tax,
+            ];
+            return ResponseHandler::handleResponse(200, responseArray: $putData);
         } catch (PDOException $e) {
             return PDOExceptionHandler::handleException($e);
         }
