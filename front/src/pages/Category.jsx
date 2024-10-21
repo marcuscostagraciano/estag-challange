@@ -1,12 +1,11 @@
-import { useState } from "react";
-
-import CategoryTable from "../components/CategoryTable/CategoryTable";
+import CategoryTable from "../components/Table";
+import CategoryForm from "../components/Category/Form/Form";
 
 function Category() {
 	return (
 		<>
 			<section className="left-side-panel">
-				<CategoryTable />
+				<CategoryForm />
 			</section>
 
 			<div className="middle-divisor" />
