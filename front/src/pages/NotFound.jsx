@@ -10,7 +10,7 @@ function NotFound() {
 			<h3 style={notFoundMessageStyle}>
 				Looks like the requested page does not exist.
 				<br />
-				Please, return to an existent page!
+				Please, return to an existing page!
 			</h3>
 		</>
 	);
