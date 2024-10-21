@@ -6,6 +6,7 @@ import Store from "../pages/Store";
 import Product from "../pages/Product";
 import Category from "../pages/Category";
 import History from "../pages/History";
+import NotFound from "../pages/NotFound";
 
 const router = createBrowserRouter([
 	{
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
 
 
 			{ path: "history", element: <History /> },
-			{ path: '*', element: <h1>Page Not Found</h1> }
+			{ path: '*', element: <NotFound /> }
 		],
 	},
 ]);
