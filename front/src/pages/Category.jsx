@@ -1,5 +1,5 @@
 import CategoryTable from "../components/Table";
-import CategoryForm from "../components/Category/Form/Form";
+import Form from "../components/Category/Form/Form";
 import { useRef } from "react";
 
 function Category() {
@@ -19,7 +19,7 @@ function Category() {
 	return (
 		<>
 			<section className="left-side-panel">
-				<CategoryForm onSubmit={handleOnSubmit} categoryNameRef={categoryNameRef} categoryTaxRef={categoryTaxRef}/>
+				<Form onSubmit={handleOnSubmit} categoryNameRef={categoryNameRef} categoryTaxRef={categoryTaxRef}/>
 			</section>
 
 			<div className="middle-divisor" />
