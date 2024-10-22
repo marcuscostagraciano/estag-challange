@@ -1,9 +1,9 @@
 import "./Form.css";
 
-function Form() {
+function Form({ onSubmit, categoryNameRef, categoryTaxRef }) {
 	return (
 		<>
-			<form id="input-form" action="" onSubmit={() => alert('submited')}>
+			<form id="input-form" onSubmit={onSubmit}>
 				<div className="inputs">
 					<input
 						type="text"
@@ -14,6 +14,7 @@ function Form() {
 						pattern="[a-zà-úA-ZÀ-Ú]+([ a-zà-úA-ZÀ-Ú]+)?([ 0-9]+)?"
 						maxLength="30"
 						title="Nome da categoria"
+						ref={categoryNameRef}
 					/>
 					<input
 						type="number"
@@ -26,9 +27,15 @@ function Form() {
 						pattern="[0-9]{1,3}(\.[0-9]{1,2})?"
 						title="Taxa sobre a categoria"
 						inputMode="numeric"
+						ref={categoryTaxRef}
 					/>
 				</div>
-                <input type="submit" id="submit-button" className="primary-bg" value="Add Category" />
+				<input
+					type="submit"
+					id="submit-button"
+					className="primary-bg"
+					value="Add Category"
+				/>
 			</form>
 		</>
 	);
