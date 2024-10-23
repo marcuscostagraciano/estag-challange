@@ -167,45 +167,44 @@ button {
         border-collapse: collapse !important;
         width: 100%;
 
-        tr {
-
-            /* Primeira linha */
-            &:first-of-type {
-                font-weight: bold;
-            }
-
-            /* Se não for a última linha, adiciona borda */
-            &:not(:last-of-type) td {
-                border-bottom: 0.15rem solid var(--TERTIARY-COLOR);
-            }
-
-            /* Ignorando a primeira linha, atribui o estilo à última célula */
-            &:not(:first-of-type) td:last-of-type {
-                button {
-                    display: block;
-                    margin: auto;
-                    width: 50%;
-                }
-            }
+        thead {
+            font-weight: bold;
 
             td {
-                padding: 0.2em;
-
-                &:first-child {
-                    /* width: 25%; */
-                    width: fit-content;
-                }
+                border-bottom: 0.15rem solid var(--TERTIARY-COLOR);
+                padding-left: 0.3rem;
 
                 &:not(:last-of-type) {
                     border-right: 0.15rem solid var(--TERTIARY-COLOR);
                 }
+            }
+        }
 
-                &:last-of-type {
-                    width: 20px;
-                    text-align: center;
+        tbody {
+            tr {
+                &:not(:last-of-type) td {
+                    /* Se não for a última linha, adiciona borda */
+                    border-bottom: 0.15rem solid var(--TERTIARY-COLOR);
+                }
 
-                    & :hover {
-                        color: var(--DELETE-HOVER);
+                td {
+                    padding: 0.2em;
+
+                    &:first-child {
+                        width: fit-content;
+                    }
+
+                    &:not(:last-of-type) {
+                        border-right: 0.15rem solid var(--TERTIARY-COLOR);
+                    }
+
+                    &:last-of-type {
+                        width: 20px;
+                        text-align: center;
+
+                        & :hover {
+                            color: var(--DELETE-HOVER);
+                        }
                     }
                 }
             }
