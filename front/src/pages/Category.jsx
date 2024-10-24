@@ -10,7 +10,9 @@ import {
 	selectAllCategories,
 	getCategoriesError,
 	getCategoriesStatus,
-	fetchCategories,
+	asyncFetchCategories,
+	asyncDeleteCategory,
+	asyncPostCategory,
 } from "../features/categories/categoriesSlice";
 
 function Category() {
@@ -23,11 +25,23 @@ function Category() {
 	const categoriesError = useSelector(getCategoriesError);
 
 	useEffect(() => {
-		if (categoriesStatus === THUNK_STATUS.IDLE) dispatch(fetchCategories());
+		if (categoriesStatus === THUNK_STATUS.IDLE)
+			dispatch(asyncFetchCategories());
 	}, [categoriesStatus, dispatch]);
 
 	const handleOnSubmit = (e) => {
 		e.preventDefault();
+
+		const name = categoryNameRef.current.value;
+		const tax = categoryTaxRef.current.value;
+		dispatch(asyncPostCategory({ name, tax }));
+
+		categoryNameRef.current.value = "";
+		categoryTaxRef.current.value = "";
+	};
+
+	const handleOnDelete = (categoryId) => {
+		dispatch(asyncDeleteCategory(categoryId));
 	};
 
 	return (
@@ -47,6 +61,7 @@ function Category() {
 					tableHeaders={CATEGORY_TABLE_HEADERS}
 					itemList={categories}
 					fetchStatus={categoriesStatus}
+					onDelete={handleOnDelete}
 				/>
 			</section>
 		</>

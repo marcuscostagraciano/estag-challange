@@ -32,30 +32,37 @@ const categoriesSlice = createSlice({
                 };
             },
         },
-        saveCategories (state, action) {
-            state = action.payload;
-        },
     },
 
     extraReducers (builder) {
         builder
-            .addCase(fetchCategories.pending, (state) => {
+            .addCase(asyncFetchCategories.pending, (state) => {
                 state.status = THUNK_STATUS.LOADING;
             })
-            .addCase(fetchCategories.fulfilled, (state, action) => {
+            .addCase(asyncFetchCategories.fulfilled, (state, action) => {
                 state.status = THUNK_STATUS.SUCCEDDED;
 
                 state.categories = state.categories.concat(action.payload);
             })
-            .addCase(fetchCategories.rejected, (state, action) => {
+            .addCase(asyncFetchCategories.rejected, (state, action) => {
                 state.status = THUNK_STATUS.FAILED;
                 state.error = action.error.message;
+            })
+            .addCase(asyncPostCategory.fulfilled, (state, action) => {
+                if (action.payload.code)
+                    state.categories.push(action.payload);
+                else alert("Something went wrong!");
+            })
+            .addCase(asyncDeleteCategory.fulfilled, (state, action) => {
+                state.categories = state.categories.filter(
+                    (category) => category.code !== action.payload
+                );
             });
     },
 });
 
 export default categoriesSlice.reducer;
-export const { postCategory, saveCategories } = categoriesSlice.actions;
+export const { postCategory } = categoriesSlice.actions;
 
 // Selectors
 const selectAllCategories = (state) => state.categories.categories;
@@ -65,7 +72,7 @@ const getCategoriesStatus = (state) => state.categories.status;
 export { selectAllCategories, getCategoriesError, getCategoriesStatus };
 
 // AsyncThunks
-const fetchCategories = createAsyncThunk(
+const asyncFetchCategories = createAsyncThunk(
     `${sliceName}/fetchCategories`,
     async () => {
         try {
@@ -76,4 +83,29 @@ const fetchCategories = createAsyncThunk(
         }
     }
 );
-export { fetchCategories };
+const asyncDeleteCategory = createAsyncThunk(
+    `${sliceName}/deleteCategory`,
+    async (categoryID) => {
+        try {
+            const data = await Categories.deleteCategory(categoryID);
+            return categoryID;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+);
+const asyncPostCategory = createAsyncThunk(
+    `${sliceName}/postCategory`,
+    async (categoryData) => {
+        try {
+            const data = await Categories.postCategory(
+                categoryData.name,
+                categoryData.tax
+            );
+            return data;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+);
+export { asyncFetchCategories, asyncDeleteCategory, asyncPostCategory };
