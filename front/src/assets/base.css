@@ -172,7 +172,7 @@ button {
 
             td {
                 border-bottom: 0.15rem solid var(--TERTIARY-COLOR);
-                padding-left: 0.3rem;
+                padding: 0.2rem;
 
                 &:not(:last-of-type) {
                     border-right: 0.15rem solid var(--TERTIARY-COLOR);
