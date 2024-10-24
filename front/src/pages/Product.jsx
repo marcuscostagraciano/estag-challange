@@ -1,34 +1,42 @@
-import ItemsTable from "../components/Table";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
-import Products from "../services/Products";
 import { PRODUCT_TABLE_HEADERS } from "../utils/constants";
 
+import ItemsTable from "../components/Table";
+import ProductsForm from "../components/Products/Form";
+
 function Product() {
-	const [productsList, setProductsList] = useState([]);
+	const amountRef = useRef(null);
+	const nameRef = useRef(null);
+	const priceRef = useRef(null);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				setProductsList(await Products.getProducts());
-			} catch (error) {
-				console.log(error);
-			}
-		};
+	useEffect(() => {}, []);
 
-		fetchData();
-	}, []);
+	const handleOnSubmit = (e) => {
+		e.preventDefault();
+
+		console.log(nameRef.current.value);
+		console.log(amountRef.current.value);
+		console.log(priceRef.current.value);
+	};
 
 	return (
 		<>
-			<section className="left-side-panel"></section>
+			<section className="left-side-panel">
+				<ProductsForm
+					amountRef={amountRef}
+					nameRef={nameRef}
+					priceRef={priceRef}
+					onSubmit={handleOnSubmit}
+				/>
+			</section>
 
 			<div className="middle-divisor" />
 
 			<section className="right-side-panel">
 				<ItemsTable
 					tableHeaders={PRODUCT_TABLE_HEADERS}
-					itemList={productsList}
+					itemList={[]}
 				/>
 			</section>
 		</>
