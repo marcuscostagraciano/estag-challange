@@ -1,31 +1,39 @@
-import CategoryTable from "../components/Table";
+import { useEffect, useRef, useState } from "react";
+
+import ItemsTable from "../components/Table";
 import Form from "../components/Category/Form/Form";
-import { useRef } from "react";
+
+import { CATEGORY_TABLE_HEADERS } from "../utils/constants";
 
 function Category() {
-	const categoryNameRef = useRef(null)
-	const categoryTaxRef = useRef(null)
+	const categoryNameRef = useRef(null);
+	const categoryTaxRef = useRef(null);
+	const [categoriesList, setCategoriesList] = useState([]);
 
 	const handleOnSubmit = (e) => {
 		e.preventDefault();
-	
-		console.log(categoryNameRef.current.value);
-		console.log(categoryTaxRef.current.value);
 
-		categoryNameRef.current.value = ''
-		categoryTaxRef.current.value = ''
+		categoryNameRef.current.value = "";
+		categoryTaxRef.current.value = "";
 	};
 
 	return (
 		<>
 			<section className="left-side-panel">
-				<Form onSubmit={handleOnSubmit} categoryNameRef={categoryNameRef} categoryTaxRef={categoryTaxRef}/>
+				<Form
+					onSubmit={handleOnSubmit}
+					categoryNameRef={categoryNameRef}
+					categoryTaxRef={categoryTaxRef}
+				/>
 			</section>
 
 			<div className="middle-divisor" />
 
 			<section className="right-side-panel">
-				<CategoryTable />
+				<ItemsTable
+					tableHeaders={CATEGORY_TABLE_HEADERS}
+					itemList={categoriesList}
+				/>
 			</section>
 		</>
 	);
