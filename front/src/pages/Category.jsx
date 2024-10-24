@@ -46,6 +46,7 @@ function Category() {
 				<ItemsTable
 					tableHeaders={CATEGORY_TABLE_HEADERS}
 					itemList={categories}
+					fetchStatus={categoriesStatus}
 				/>
 			</section>
 		</>
