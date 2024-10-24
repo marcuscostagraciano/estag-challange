@@ -24,9 +24,14 @@ const THUNK_STATUS = {
     FAILED: 'failed',
 };
 
+const HTTP_STATUS = {
+    CREATED: 201,
+};
+
 export {
     CATEGORY_TABLE_HEADERS,
     PRODUCT_TABLE_HEADERS,
     SUITE_STORE_TABLE_HEADERS,
     THUNK_STATUS,
+    HTTP_STATUS,
 };
