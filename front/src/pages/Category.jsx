@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CATEGORY_TABLE_HEADERS, THUNK_STATUS } from "../utils/constants";
 
 import ItemsTable from "../components/Table";
-import Form from "../components/Category/Form/Form";
+import Form from "../components/Categories/Form";
 
 import {
 	selectAllCategories,

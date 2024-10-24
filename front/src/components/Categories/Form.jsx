@@ -1,4 +1,4 @@
-import "./Form.css";
+import "../Form.css";
 
 function Form({ onSubmit, categoryNameRef, categoryTaxRef }) {
 	return (
