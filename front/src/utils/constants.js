@@ -17,8 +17,16 @@ const SUITE_STORE_TABLE_HEADERS = tableHeaderFactory([
     "Total",
 ]);
 
+const THUNK_STATUS = {
+    IDLE: 'idle',
+    LOADING: 'loading',
+    SUCCEDDED: 'succeeded',
+    FAILED: 'failed',
+};
+
 export {
     CATEGORY_TABLE_HEADERS,
     PRODUCT_TABLE_HEADERS,
     SUITE_STORE_TABLE_HEADERS,
+    THUNK_STATUS,
 };
