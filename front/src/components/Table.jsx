@@ -12,7 +12,7 @@ const Headers = ({ headers }) => {
 	);
 };
 
-const Body = ({ items, fetchStatus, quantityTableRows }) => {
+const Body = ({ items, fetchStatus, quantityTableRows, onDelete }) => {
 	const itemsProperties = Object.keys(items.length ? items[0] : []);
 
 	const renderListOfItems = items.map((item) => {
@@ -21,6 +21,12 @@ const Body = ({ items, fetchStatus, quantityTableRows }) => {
 				{itemsProperties.map((property) => (
 					<td key={property}>{item[property]}</td>
 				))}
+				<td>
+					<button
+						className="bi bi-trash-fill delete-btn"
+						onClick={() => onDelete(item.code)}
+					/>
+				</td>
 			</tr>
 		);
 	});
@@ -40,7 +46,7 @@ const Body = ({ items, fetchStatus, quantityTableRows }) => {
 	return <tbody>{items.length ? renderListOfItems : tableRowMessage}</tbody>;
 };
 
-function Table({ tableHeaders, fetchStatus, itemList }) {
+function Table({ tableHeaders, fetchStatus, itemList, onDelete }) {
 	const countTableRows = tableHeaders.length;
 
 	return (
@@ -51,6 +57,7 @@ function Table({ tableHeaders, fetchStatus, itemList }) {
 					items={itemList}
 					quantityTableRows={countTableRows}
 					fetchStatus={fetchStatus}
+					onDelete={onDelete}
 				/>
 			</table>
 		</>
