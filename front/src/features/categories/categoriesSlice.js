@@ -105,15 +105,21 @@ const asyncPostCategory = createAsyncThunk(
     `${sliceName}/postCategory`,
     async (categoryData, { getState, rejectWithValue }) => {
         const categoriesInState = getState().categories.categories;
-        const isNameUsed = categoriesInState.find(
-            (category) => category.name == categoryData.name
-        );
 
-        if (!isNameUsed) {
+        const categoryName = categoryData.name;
+        const categoryTax = categoryData.tax;
+
+        const isNameUsed = categoriesInState.find(
+            (category) => category.name == categoryName
+        );
+        const isTaxInRange =
+            !!Number(categoryTax) && 0 <= categoryTax && categoryTax <= 100;
+
+        if (!isNameUsed && isTaxInRange) {
             try {
                 const data = await Categories.postCategory(
-                    categoryData.name,
-                    categoryData.tax
+                    categoryName,
+                    categoryTax
                 );
                 return data;
             } catch (error) {
@@ -121,7 +127,7 @@ const asyncPostCategory = createAsyncThunk(
             }
         }
 
-        alert("Category name being used");
+        alert("Something went wrong! Please reenter your inputs!");
         return rejectWithValue(HTTP_STATUS.FORBIDDEN);
     }
 );
