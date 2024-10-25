@@ -1,14 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { THUNK_STATUS } from "../../utils/constants";
+import { THUNK_STATUS, INITIAL_STATE } from "../../utils/constants";
 
 import Categories from "../../services/Categories";
 
 const sliceName = "categories";
 const initialState = {
     categories: [],
-    error: null,
-    status: THUNK_STATUS.IDLE,
+    ...INITIAL_STATE,
 };
 
 const categoriesSlice = createSlice({
@@ -49,8 +48,7 @@ const categoriesSlice = createSlice({
                 state.error = action.error.message;
             })
             .addCase(asyncPostCategory.fulfilled, (state, action) => {
-                if (action.payload.code)
-                    state.categories.push(action.payload);
+                if (action.payload.code) state.categories.push(action.payload);
                 else alert("Something went wrong!");
             })
             .addCase(asyncDeleteCategory.fulfilled, (state, action) => {
@@ -61,15 +59,10 @@ const categoriesSlice = createSlice({
     },
 });
 
-export default categoriesSlice.reducer;
-export const { postCategory } = categoriesSlice.actions;
-
 // Selectors
 const selectAllCategories = (state) => state.categories.categories;
 const getCategoriesError = (state) => state.categories.error;
 const getCategoriesStatus = (state) => state.categories.status;
-
-export { selectAllCategories, getCategoriesError, getCategoriesStatus };
 
 // AsyncThunks
 const asyncFetchCategories = createAsyncThunk(
@@ -108,4 +101,16 @@ const asyncPostCategory = createAsyncThunk(
         }
     }
 );
-export { asyncFetchCategories, asyncDeleteCategory, asyncPostCategory };
+
+export default categoriesSlice.reducer;
+export const { postCategory } = categoriesSlice.actions;
+export {
+    // Selectors
+    selectAllCategories,
+    getCategoriesError,
+    getCategoriesStatus,
+    // Thunks
+    asyncFetchCategories,
+    asyncDeleteCategory,
+    asyncPostCategory,
+};
