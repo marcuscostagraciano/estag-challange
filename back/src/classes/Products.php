@@ -32,8 +32,8 @@ class Products
                 'code' => $last_code,
                 'name' => $name,
                 'amount' => $amount,
-                'unit_price' => $unit_price,
-                'category' => $category_code,
+                'price' => $unit_price,
+                'category_code' => $category_code,
             ];
             return ResponseHandler::handleResponse(201, responseArray: $insert_data);
         } catch (PDOException $e) {
