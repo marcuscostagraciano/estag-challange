@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CATEGORY_TABLE_HEADERS, THUNK_STATUS } from "../utils/constants";
 
 import ItemsTable from "../components/Table";
-import Form from "../components/Categories/Form";
+import CategoriesForm from "../components/Categories/Form";
 
 import {
 	selectAllCategories,
@@ -55,7 +55,7 @@ function Category() {
 	return (
 		<>
 			<section className="left-side-panel">
-				<Form
+				<CategoriesForm
 					onSubmit={handleOnSubmit}
 					categoryNameRef={categoryNameRef}
 					categoryTaxRef={categoryTaxRef}
