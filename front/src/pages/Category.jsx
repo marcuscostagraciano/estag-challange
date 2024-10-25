@@ -16,8 +16,8 @@ import {
 } from "../features/categories/categoriesSlice";
 
 function Category() {
-	const categoryNameRef = useRef(null);
-	const categoryTaxRef = useRef(null);
+	const categoryNameRef = useRef();
+	const categoryTaxRef = useRef();
 
 	const dispatch = useDispatch();
 	const categories = useSelector(selectAllCategories);

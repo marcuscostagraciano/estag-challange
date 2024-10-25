@@ -6,9 +6,9 @@ import ItemsTable from "../components/Table";
 import ProductsForm from "../components/Products/Form";
 
 function Product() {
-	const amountRef = useRef(null);
-	const nameRef = useRef(null);
-	const priceRef = useRef(null);
+	const amountRef = useRef();
+	const nameRef = useRef();
+	const priceRef = useRef();
 
 	useEffect(() => {}, []);
 
