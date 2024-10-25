@@ -1,23 +1,53 @@
 import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { PRODUCT_TABLE_HEADERS } from "../utils/constants";
+import { PRODUCT_TABLE_HEADERS, THUNK_STATUS } from "../utils/constants";
 
 import ItemsTable from "../components/Table";
 import ProductsForm from "../components/Products/Form";
+
+import {
+	asyncFetchCategories,
+	getCategoriesStatus,
+	selectAllCategories,
+} from "../features/categories/categoriesSlice";
+
+import {
+	asyncFetchProducts,
+	getProductsStatus,
+	selectAllProducts,
+} from "../features/products/productsSlice";
 
 function Product() {
 	const amountRef = useRef();
 	const nameRef = useRef();
 	const priceRef = useRef();
+	const categoryRef = useRef();
 
-	useEffect(() => {}, []);
+	const dispatch = useDispatch();
+	// Categories
+	const categoriesList = useSelector(selectAllCategories);
+	const categoriesStatus = useSelector(getCategoriesStatus);
+	// Products
+	const productsList = useSelector(selectAllProducts);
+	const productsStatus = useSelector(getProductsStatus);
+
+	useEffect(() => {
+		if (categoriesStatus === THUNK_STATUS.IDLE)
+			dispatch(asyncFetchCategories());
+		if (productsStatus === THUNK_STATUS.IDLE)
+			dispatch(asyncFetchProducts());
+	}, [categoriesStatus, productsStatus, dispatch, THUNK_STATUS]);
 
 	const handleOnSubmit = (e) => {
 		e.preventDefault();
 
-		console.log(nameRef.current.value);
-		console.log(amountRef.current.value);
-		console.log(priceRef.current.value);
+		console.log({
+			nameRef: nameRef.current.value,
+			amountRef: amountRef.current.value,
+			priceRef: priceRef.current.value,
+			categoryRef: categoryRef.current.value,
+		});
 	};
 
 	return (
@@ -27,6 +57,8 @@ function Product() {
 					amountRef={amountRef}
 					nameRef={nameRef}
 					priceRef={priceRef}
+					categoryRef={categoryRef}
+					categoriesList={categoriesList}
 					onSubmit={handleOnSubmit}
 				/>
 			</section>
@@ -36,7 +68,7 @@ function Product() {
 			<section className="right-side-panel">
 				<ItemsTable
 					tableHeaders={PRODUCT_TABLE_HEADERS}
-					itemList={[]}
+					itemList={productsList}
 				/>
 			</section>
 		</>
