@@ -13,7 +13,7 @@ function Form({ onSubmit, categoryNameRef, categoryTaxRef }) {
 						minLength="3"
 						pattern="[a-zà-úA-ZÀ-Ú]+([ a-zà-úA-ZÀ-Ú]+)?([ 0-9]+)?"
 						maxLength="30"
-						title="Nome da categoria"
+						title="Category name"
 						ref={categoryNameRef}
 					/>
 					<input
@@ -25,7 +25,7 @@ function Form({ onSubmit, categoryNameRef, categoryTaxRef }) {
 						step="0.01"
 						required
 						pattern="[0-9]{1,3}(\.[0-9]{1,2})?"
-						title="Taxa sobre a categoria"
+						title="Category tax"
 						inputMode="numeric"
 						ref={categoryTaxRef}
 					/>

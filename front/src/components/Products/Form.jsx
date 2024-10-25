@@ -1,6 +1,6 @@
 import "../Form.css";
 
-const ProductsForm = ({
+const Form = ({
 	onSubmit,
 	nameRef,
 	amountRef,
@@ -20,13 +20,13 @@ const ProductsForm = ({
 				<div className="inputs">
 					<input
 						type="text"
-						id="category_name"
-						placeholder="Category name"
+						id="product_name"
+						placeholder="Product name"
 						required
 						minLength="3"
 						pattern="[a-zà-úA-ZÀ-Ú]+([ a-zà-úA-ZÀ-Ú]+)?([ 0-9]+)?"
 						maxLength="30"
-						title="Nome da categoria"
+						title="Product name"
 						ref={nameRef}
 					/>
 					<input
@@ -37,7 +37,7 @@ const ProductsForm = ({
 						step="1"
 						required
 						pattern="[^0][0-9]+"
-						title="Taxa sobre a categoria"
+						title="Amount of products"
 						inputMode="numeric"
 						ref={amountRef}
 					/>
@@ -49,13 +49,14 @@ const ProductsForm = ({
 						step="0.01"
 						required
 						pattern="([0-9]*)\.?([0-9]{1,2})?"
-						title="Preço unitário"
+						title="Unitary price"
 						inputMode="numeric"
 						ref={priceRef}
 					/>
 					<select
 						id="category-selection"
 						name="category-selection"
+						title="Category selection"
 						ref={categoryRef}
 					>
 						{renderCategoriesOptions}
@@ -72,4 +73,4 @@ const ProductsForm = ({
 	);
 };
 
-export default ProductsForm;
+export default Form;
