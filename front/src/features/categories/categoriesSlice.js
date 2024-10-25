@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { THUNK_STATUS, INITIAL_STATE } from "../../utils/constants";
+import {
+    THUNK_STATUS,
+    INITIAL_STATE,
+    HTTP_STATUS,
+} from "../../utils/constants";
 
 import Categories from "../../services/Categories";
 
@@ -48,8 +52,7 @@ const categoriesSlice = createSlice({
                 state.error = action.error.message;
             })
             .addCase(asyncPostCategory.fulfilled, (state, action) => {
-                if (action.payload.code) state.categories.push(action.payload);
-                else alert("Something went wrong!");
+                state.categories.push(action.payload);
             })
             .addCase(asyncDeleteCategory.fulfilled, (state, action) => {
                 state.categories = state.categories.filter(
@@ -78,27 +81,48 @@ const asyncFetchCategories = createAsyncThunk(
 );
 const asyncDeleteCategory = createAsyncThunk(
     `${sliceName}/deleteCategory`,
-    async (categoryID) => {
-        try {
-            const data = await Categories.deleteCategory(categoryID);
-            return categoryID;
-        } catch (error) {
-            console.error(error);
+    async (categoryID, { getState, rejectWithValue }) => {
+        const productsInState = getState().products.products;
+        const isUsed = productsInState.find(
+            (product) => product.category_code == categoryID
+        );
+
+        if (!isUsed) {
+            try {
+                const data = await Categories.deleteCategory(categoryID);
+                return categoryID;
+            } catch (error) {
+                console.error(error);
+            }
         }
+
+        alert("Category being used");
+        return rejectWithValue(HTTP_STATUS.FORBIDDEN);
     }
 );
+
 const asyncPostCategory = createAsyncThunk(
     `${sliceName}/postCategory`,
-    async (categoryData) => {
-        try {
-            const data = await Categories.postCategory(
-                categoryData.name,
-                categoryData.tax
-            );
-            return data;
-        } catch (error) {
-            console.error(error);
+    async (categoryData, { getState, rejectWithValue }) => {
+        const categoriesInState = getState().categories.categories;
+        const isNameUsed = categoriesInState.find(
+            (category) => category.name == categoryData.name
+        );
+
+        if (!isNameUsed) {
+            try {
+                const data = await Categories.postCategory(
+                    categoryData.name,
+                    categoryData.tax
+                );
+                return data;
+            } catch (error) {
+                console.error(error);
+            }
         }
+
+        alert("Category name being used");
+        return rejectWithValue(HTTP_STATUS.FORBIDDEN);
     }
 );
 
