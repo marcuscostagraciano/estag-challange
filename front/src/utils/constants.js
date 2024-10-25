@@ -28,10 +28,16 @@ const HTTP_STATUS = {
     CREATED: 201,
 };
 
+const INITIAL_STATE = {
+    error: null,
+    status: THUNK_STATUS.IDLE,
+};
+
 export {
     CATEGORY_TABLE_HEADERS,
     PRODUCT_TABLE_HEADERS,
     SUITE_STORE_TABLE_HEADERS,
     THUNK_STATUS,
     HTTP_STATUS,
+    INITIAL_STATE,
 };
