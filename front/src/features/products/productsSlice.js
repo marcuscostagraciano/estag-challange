@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { INITIAL_STATE, THUNK_STATUS } from "../../utils/constants";
+import {
+    HTTP_STATUS,
+    INITIAL_STATE,
+    THUNK_STATUS,
+} from "../../utils/constants";
 
 import Products from "../../services/Products";
 
@@ -27,6 +31,9 @@ const productsSlice = createSlice({
             .addCase(asyncFetchProducts.rejected, (state, action) => {
                 state.status = THUNK_STATUS.FAILED;
                 state.error = action.error.message;
+            })
+            .addCase(asyncPostProduct.fulfilled, (state, action) => {
+                state.products.push(action.payload);
             });
     },
 });
@@ -48,6 +55,42 @@ const asyncFetchProducts = createAsyncThunk(
         }
     }
 );
+const asyncPostProduct = createAsyncThunk(
+    `${sliceName}/postProduct`,
+    async (productData, { getState, rejectWithValue }) => {
+        const productsInState = getState().products.products;
+
+        const name = productData.name;
+        const amount = productData.amount;
+        const price = productData.price;
+        const category_code = productData.category;
+
+        const isProductNameUsed = !!productsInState.find(
+            (product) => product.name == name
+        );
+        const isAmountValid = !!Number(amount) && 0 < amount;
+        const isPriceValid = !!Number(price) && 0 < price;
+
+        console.log({ isProductNameUsed, isAmountValid, isPriceValid });
+
+        if (!isProductNameUsed && isAmountValid && isPriceValid) {
+            try {
+                const data = await Products.postProduct(
+                    name,
+                    amount,
+                    price,
+                    category_code
+                );
+                return data;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        alert("Something went wrong! Please reenter your inputs!");
+        return rejectWithValue(HTTP_STATUS.FORBIDDEN);
+    }
+);
 
 export default productsSlice.reducer;
 export {
@@ -57,4 +100,5 @@ export {
     getProductsStatus,
     // AsyncThunks
     asyncFetchProducts,
+    asyncPostProduct,
 };

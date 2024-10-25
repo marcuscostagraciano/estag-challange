@@ -18,6 +18,8 @@ import {
 
 import {
 	asyncFetchProducts,
+	// asyncDeleteProduct,
+	asyncPostProduct,
 	getProductsStatus,
 	selectAllProducts,
 } from "../features/products/productsSlice";
@@ -46,12 +48,14 @@ function Product() {
 	const handleOnSubmit = (e) => {
 		e.preventDefault();
 
-		console.log({
-			nameRef: nameRef.current.value,
-			amountRef: amountRef.current.value,
-			priceRef: priceRef.current.value,
-			categoryRef: categoryRef.current.value,
-		});
+		const name = nameRef.current.value;
+		const amount = amountRef.current.value;
+		const price = priceRef.current.value;
+		const category = categoryRef.current.value;
+		dispatch(asyncPostProduct({ name, amount, price, category }));
+		nameRef.current.value = null;
+		amountRef.current.value = null;
+		priceRef.current.value = null;
 	};
 
 	return (
