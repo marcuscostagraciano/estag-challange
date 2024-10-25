@@ -18,7 +18,7 @@ import {
 
 import {
 	asyncFetchProducts,
-	// asyncDeleteProduct,
+	asyncDeleteProduct,
 	asyncPostProduct,
 	getProductsStatus,
 	selectAllProducts,
@@ -58,6 +58,10 @@ function Product() {
 		priceRef.current.value = null;
 	};
 
+	const handleOnDelete = (productId) => {
+		dispatch(asyncDeleteProduct(productId));
+	};
+
 	return (
 		<>
 			<section className="left-side-panel">
@@ -79,6 +83,7 @@ function Product() {
 					fetchStatus={productsStatus}
 					itemsProperties={PRODUCT_FIELDS}
 					itemList={productsList}
+					onDelete={handleOnDelete}
 				/>
 			</section>
 		</>

@@ -32,6 +32,11 @@ const productsSlice = createSlice({
                 state.status = THUNK_STATUS.FAILED;
                 state.error = action.error.message;
             })
+            .addCase(asyncDeleteProduct.fulfilled, (state, action) => {
+                state.products = state.products.filter(
+                    (product) => product.code !== action.payload
+                );
+            })
             .addCase(asyncPostProduct.fulfilled, (state, action) => {
                 state.products.push(action.payload);
             });
@@ -50,6 +55,17 @@ const asyncFetchProducts = createAsyncThunk(
         try {
             const data = await Products.getProducts();
             return data;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+);
+const asyncDeleteProduct = createAsyncThunk(
+    `${sliceName}/deleteProduct`,
+    async (productID, { getState, rejectWithValue }) => {
+        try {
+            const data = await Products.deleteProduct(productID);
+            return productID;
         } catch (error) {
             console.error(error);
         }
@@ -100,5 +116,6 @@ export {
     getProductsStatus,
     // AsyncThunks
     asyncFetchProducts,
+    asyncDeleteProduct,
     asyncPostProduct,
 };
