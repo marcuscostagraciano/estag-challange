@@ -15,6 +15,11 @@ import {
 	asyncPostCategory,
 } from "../features/categories/categoriesSlice";
 
+import {
+	asyncFetchProducts,
+	getProductsStatus,
+} from "../features/products/productsSlice";
+
 function Category() {
 	const categoryNameRef = useRef();
 	const categoryTaxRef = useRef();
@@ -22,12 +27,15 @@ function Category() {
 	const dispatch = useDispatch();
 	const categories = useSelector(selectAllCategories);
 	const categoriesStatus = useSelector(getCategoriesStatus);
+	const productsStatus = useSelector(getProductsStatus);
 	const categoriesError = useSelector(getCategoriesError);
 
 	useEffect(() => {
 		if (categoriesStatus === THUNK_STATUS.IDLE)
 			dispatch(asyncFetchCategories());
-	}, [categoriesStatus, dispatch, THUNK_STATUS]);
+		if (productsStatus === THUNK_STATUS.IDLE)
+			dispatch(asyncFetchProducts());
+	}, [categoriesStatus, productsStatus, dispatch, THUNK_STATUS]);
 
 	const handleOnSubmit = (e) => {
 		e.preventDefault();
