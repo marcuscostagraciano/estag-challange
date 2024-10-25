@@ -33,7 +33,7 @@ const Form = ({
 						type="number"
 						id="amount"
 						placeholder="Amount"
-						min="0"
+						min="1"
 						step="1"
 						required
 						pattern="[^0][0-9]+"
