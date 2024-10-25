@@ -1,6 +1,19 @@
 import "../Form.css";
 
-const ProductsForm = ({ onSubmit, nameRef, amountRef, priceRef }) => {
+const ProductsForm = ({
+	onSubmit,
+	nameRef,
+	amountRef,
+	priceRef,
+	categoryRef,
+	categoriesList,
+}) => {
+	const renderCategoriesOptions = categoriesList.map((category) => (
+		<option key={category.code} value={category.code}>
+			{category.name}
+		</option>
+	));
+
 	return (
 		<>
 			<form id="input-form" onSubmit={onSubmit}>
@@ -40,6 +53,13 @@ const ProductsForm = ({ onSubmit, nameRef, amountRef, priceRef }) => {
 						inputMode="numeric"
 						ref={priceRef}
 					/>
+					<select
+						id="category-selection"
+						name="category-selection"
+						ref={categoryRef}
+					>
+						{renderCategoriesOptions}
+					</select>
 				</div>
 				<input
 					type="submit"
