@@ -1,7 +1,11 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { CATEGORY_TABLE_HEADERS, THUNK_STATUS } from "../utils/constants";
+import {
+	CATEGORY_FIELDS,
+	CATEGORY_TABLE_HEADERS,
+	THUNK_STATUS,
+} from "../utils/constants";
 
 import ItemsTable from "../components/Table";
 import CategoriesForm from "../components/Categories/Form";
@@ -69,6 +73,7 @@ function Category() {
 					tableHeaders={CATEGORY_TABLE_HEADERS}
 					itemList={categories}
 					fetchStatus={categoriesStatus}
+					itemsProperties={CATEGORY_FIELDS}
 					onDelete={handleOnDelete}
 				/>
 			</section>

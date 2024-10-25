@@ -1,7 +1,11 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { PRODUCT_TABLE_HEADERS, THUNK_STATUS } from "../utils/constants";
+import {
+	PRODUCT_FIELDS,
+	PRODUCT_TABLE_HEADERS,
+	THUNK_STATUS,
+} from "../utils/constants";
 
 import ItemsTable from "../components/Table";
 import ProductsForm from "../components/Products/Form";
@@ -68,6 +72,8 @@ function Product() {
 			<section className="right-side-panel">
 				<ItemsTable
 					tableHeaders={PRODUCT_TABLE_HEADERS}
+					fetchStatus={productsStatus}
+					itemsProperties={PRODUCT_FIELDS}
 					itemList={productsList}
 				/>
 			</section>

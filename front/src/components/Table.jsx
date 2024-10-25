@@ -12,8 +12,8 @@ const Headers = ({ headers }) => {
 	);
 };
 
-const Body = ({ items, fetchStatus, quantityTableRows, onDelete }) => {
-	const itemsProperties = Object.keys(items.length ? items[0] : []);
+const Body = ({ items, fetchStatus, itemsProperties, onDelete }) => {
+	const countTableRows = itemsProperties.length;
 
 	const renderListOfItems = items.map((item) => {
 		return (
@@ -33,7 +33,7 @@ const Body = ({ items, fetchStatus, quantityTableRows, onDelete }) => {
 
 	const tableRowMessage = (
 		<tr>
-			<td colSpan={quantityTableRows}>
+			<td colSpan={countTableRows}>
 				{fetchStatus === THUNK_STATUS.LOADING
 					? "Loading items..."
 					: fetchStatus === THUNK_STATUS.FAILED
@@ -46,17 +46,21 @@ const Body = ({ items, fetchStatus, quantityTableRows, onDelete }) => {
 	return <tbody>{items.length ? renderListOfItems : tableRowMessage}</tbody>;
 };
 
-function Table({ tableHeaders, fetchStatus, itemList, onDelete }) {
-	const countTableRows = tableHeaders.length;
-
+function Table({
+	tableHeaders,
+	fetchStatus,
+	itemList,
+	itemsProperties,
+	onDelete,
+}) {
 	return (
 		<>
 			<table>
 				<Headers headers={tableHeaders} />
 				<Body
 					items={itemList}
-					quantityTableRows={countTableRows}
 					fetchStatus={fetchStatus}
+					itemsProperties={itemsProperties}
 					onDelete={onDelete}
 				/>
 			</table>

@@ -17,6 +17,21 @@ const SUITE_STORE_TABLE_HEADERS = tableHeaderFactory([
     "Total",
 ]);
 
+const BASE_FIELDS = [
+    'code',
+    'name'
+];
+const CATEGORY_FIELDS = [
+    ...BASE_FIELDS,
+    'tax'
+];
+const PRODUCT_FIELDS = [
+    ...BASE_FIELDS,
+    'amount',
+    'price',
+    'category_code',
+];
+
 const THUNK_STATUS = {
     IDLE: 'idle',
     LOADING: 'loading',
@@ -36,10 +51,16 @@ const INITIAL_STATE = {
 };
 
 export {
+    // Table Headers
     CATEGORY_TABLE_HEADERS,
     PRODUCT_TABLE_HEADERS,
     SUITE_STORE_TABLE_HEADERS,
+    // Objects fields
+    CATEGORY_FIELDS,
+    PRODUCT_FIELDS,
+    // State
+    INITIAL_STATE,
+    // Status
     THUNK_STATUS,
     HTTP_STATUS,
-    INITIAL_STATE,
 };
