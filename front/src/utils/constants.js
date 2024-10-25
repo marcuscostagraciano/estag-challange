@@ -25,7 +25,9 @@ const THUNK_STATUS = {
 };
 
 const HTTP_STATUS = {
+    OK: 200,
     CREATED: 201,
+    FORBIDDEN: 403,
 };
 
 const INITIAL_STATE = {
