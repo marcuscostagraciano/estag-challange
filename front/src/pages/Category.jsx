@@ -27,7 +27,7 @@ function Category() {
 	useEffect(() => {
 		if (categoriesStatus === THUNK_STATUS.IDLE)
 			dispatch(asyncFetchCategories());
-	}, [categoriesStatus, dispatch]);
+	}, [categoriesStatus, dispatch, THUNK_STATUS]);
 
 	const handleOnSubmit = (e) => {
 		e.preventDefault();
