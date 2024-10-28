@@ -42,6 +42,8 @@ const productsSlice = createSlice({
                 state.error = action.payload;
             })
             .addCase(asyncDeleteProduct.fulfilled, (state, action) => {
+                state.error = null;
+                state.status = THUNK_STATUS.SUCCEDDED;
                 state.products = state.products.filter(
                     (product) => product.code !== action.payload
                 );
