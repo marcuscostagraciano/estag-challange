@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -14,15 +14,10 @@ import {
 	selectAllCategories,
 	getCategoriesError,
 	getCategoriesStatus,
-	asyncFetchCategories,
 	asyncDeleteCategory,
 	asyncPostCategory,
 } from "../features/categories/categoriesSlice";
 
-import {
-	asyncFetchProducts,
-	getProductsStatus,
-} from "../features/products/productsSlice";
 import Loader from "../components/Loader/Loader";
 
 function Category() {
@@ -32,15 +27,7 @@ function Category() {
 	const dispatch = useDispatch();
 	const categories = useSelector(selectAllCategories);
 	const categoriesStatus = useSelector(getCategoriesStatus);
-	const productsStatus = useSelector(getProductsStatus);
 	const categoriesError = useSelector(getCategoriesError);
-
-	useEffect(() => {
-		if (!categoriesError && categoriesStatus === THUNK_STATUS.IDLE)
-			dispatch(asyncFetchCategories());
-		if (productsStatus === THUNK_STATUS.IDLE)
-			dispatch(asyncFetchProducts());
-	}, [categoriesStatus, productsStatus, dispatch]);
 
 	const handleOnSubmit = (e) => {
 		e.preventDefault();

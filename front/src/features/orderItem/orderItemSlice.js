@@ -10,7 +10,7 @@ import OrderItem from "../../services/OrderItem";
 
 const sliceName = "orderItem";
 const initialState = {
-    products: [],
+    orderItem: [],
     ...INITIAL_STATE,
 };
 
@@ -38,19 +38,19 @@ const orderItemSlice = createSlice({
     },
 
     extraReducers (builder) {
-        // builder
-        //     // Fetch
-        //     .addCase(asyncFetchCategories.pending, (state) => {
-        //         state.status = THUNK_STATUS.LOADING;
-        //     })
-        //     .addCase(asyncFetchCategories.rejected, (state, action) => {
-        //         state.status = THUNK_STATUS.IDLE;
-        //         state.error = action.error.message;
-        //     })
-        //     .addCase(asyncFetchCategories.fulfilled, (state, action) => {
-        //         state.status = THUNK_STATUS.SUCCEDDED;
-        //         state.categories = state.categories.concat(action.payload);
-        //     })
+        builder
+            // Fetch
+            .addCase(asyncFetchOrderItems.pending, (state) => {
+                state.status = THUNK_STATUS.LOADING;
+            })
+            .addCase(asyncFetchOrderItems.rejected, (state, action) => {
+                state.status = THUNK_STATUS.IDLE;
+                state.error = action.error.message;
+            })
+            .addCase(asyncFetchOrderItems.fulfilled, (state, action) => {
+                state.status = THUNK_STATUS.SUCCEDDED;
+                state.orderItem = state.orderItem.concat(action.payload);
+            });
         //     // Delete
         //     .addCase(asyncDeleteCategory.pending, (state, action) => {
         //         state.status = THUNK_STATUS.LOADING;
@@ -83,22 +83,22 @@ const orderItemSlice = createSlice({
 });
 
 // Selectors
-const selectAllCategories = (state) => state.categories.categories;
-const getCategoriesError = (state) => state.categories.error;
-const getCategoriesStatus = (state) => state.categories.status;
+const selectAllOrderItem = (state) => state.orderItem.orderItem;
+const getOrderItemError = (state) => state.orderItem.error;
+const getOrderItemStatus = (state) => state.orderItem.status;
 
 // AsyncThunks
-// const asyncFetchCategories = createAsyncThunk(
-//     `${sliceName}/fetchCategories`,
-//     async () => {
-//         try {
-//             const data = await Categories.getCategories();
-//             return data;
-//         } catch (error) {
-//             console.error(error);
-//         }
-//     }
-// );
+const asyncFetchOrderItems = createAsyncThunk(
+    `${sliceName}/fetchOrderItem`,
+    async () => {
+        try {
+            const data = await OrderItem.getOrderItems();
+            return data;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+);
 // const asyncDeleteCategory = createAsyncThunk(
 //     `${sliceName}/deleteCategory`,
 //     async (categoryID, { getState, rejectWithValue }) => {
@@ -109,7 +109,7 @@ const getCategoriesStatus = (state) => state.categories.status;
 
 //         if (!isUsed) {
 //             try {
-//                 const data = await Categories.deleteCategory(categoryID);
+//                 const data = await OrderItem.deleteCategory(categoryID);
 //                 return categoryID;
 //             } catch (error) {
 //                 console.error(error);
@@ -135,7 +135,7 @@ const getCategoriesStatus = (state) => state.categories.status;
 
 //         if (!isNameUsed && isTaxInRange) {
 //             try {
-//                 const data = await Categories.postCategory(
+//                 const data = await OrderItem.postCategory(
 //                     categoryName,
 //                     categoryTax
 //                 );
@@ -154,11 +154,11 @@ export default orderItemSlice.reducer;
 export const { addProductToCart } = orderItemSlice.actions;
 export {
     // Selectors
-    selectAllCategories,
-    getCategoriesError,
-    getCategoriesStatus,
+    selectAllOrderItem,
+    getOrderItemError,
+    getOrderItemStatus,
     // Thunks
-    // asyncFetchCategories,
+    asyncFetchOrderItems,
     // asyncDeleteCategory,
     // asyncPostCategory,
 };

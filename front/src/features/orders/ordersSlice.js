@@ -21,19 +21,19 @@ const ordersSlice = createSlice({
     reducers: {},
 
     extraReducers (builder) {
-        // builder
-        //     // Fetch
-        //     .addCase(asyncFetchCategories.pending, (state) => {
-        //         state.status = THUNK_STATUS.LOADING;
-        //     })
-        //     .addCase(asyncFetchCategories.rejected, (state, action) => {
-        //         state.status = THUNK_STATUS.IDLE;
-        //         state.error = action.error.message;
-        //     })
-        //     .addCase(asyncFetchCategories.fulfilled, (state, action) => {
-        //         state.status = THUNK_STATUS.SUCCEDDED;
-        //         state.categories = state.categories.concat(action.payload);
-        //     })
+        builder
+            // Fetch
+            .addCase(asyncFetchOrders.pending, (state) => {
+                state.status = THUNK_STATUS.LOADING;
+            })
+            .addCase(asyncFetchOrders.rejected, (state, action) => {
+                state.status = THUNK_STATUS.IDLE;
+                state.error = action.error.message;
+            })
+            .addCase(asyncFetchOrders.fulfilled, (state, action) => {
+                state.status = THUNK_STATUS.SUCCEDDED;
+                state.orders = state.orders.concat(action.payload);
+            });
         //     // Delete
         //     .addCase(asyncDeleteCategory.pending, (state, action) => {
         //         state.status = THUNK_STATUS.LOADING;
@@ -66,22 +66,22 @@ const ordersSlice = createSlice({
 });
 
 // Selectors
-const selectAllCategories = (state) => state.categories.categories;
-const getCategoriesError = (state) => state.categories.error;
-const getCategoriesStatus = (state) => state.categories.status;
+const selectAllOrders = (state) => state.orders.orders;
+const getOrdersError = (state) => state.orders.error;
+const getOrdersStatus = (state) => state.orders.status;
 
-// AsyncThunks
-// const asyncFetchCategories = createAsyncThunk(
-//     `${sliceName}/fetchCategories`,
-//     async () => {
-//         try {
-//             const data = await Categories.getCategories();
-//             return data;
-//         } catch (error) {
-//             console.error(error);
-//         }
-//     }
-// );
+// AsyncThunks;
+const asyncFetchOrders = createAsyncThunk(
+    `${sliceName}/fetchOrders`,
+    async () => {
+        try {
+            const data = await Orders.getOrders();
+            return data;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+);
 // const asyncDeleteCategory = createAsyncThunk(
 //     `${sliceName}/deleteCategory`,
 //     async (categoryID, { getState, rejectWithValue }) => {
@@ -137,11 +137,11 @@ export default ordersSlice.reducer;
 export const { addProductToCart } = ordersSlice.actions;
 export {
     // Selectors
-    selectAllCategories,
-    getCategoriesError,
-    getCategoriesStatus,
+    selectAllOrders,
+    getOrdersError,
+    getOrdersStatus,
     // Thunks
-    // asyncFetchCategories,
+    asyncFetchOrders,
     // asyncDeleteCategory,
     // asyncPostCategory,
 };

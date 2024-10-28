@@ -10,14 +10,9 @@ import {
 import ItemsTable from "../components/Table";
 import ProductsForm from "../components/Products/Form";
 
-import {
-	asyncFetchCategories,
-	getCategoriesStatus,
-	selectAllCategories,
-} from "../features/categories/categoriesSlice";
+import { selectAllCategories } from "../features/categories/categoriesSlice";
 
 import {
-	asyncFetchProducts,
 	asyncDeleteProduct,
 	asyncPostProduct,
 	getProductsStatus,
@@ -34,17 +29,9 @@ function Product() {
 	const dispatch = useDispatch();
 	// Categories
 	const categoriesList = useSelector(selectAllCategories);
-	const categoriesStatus = useSelector(getCategoriesStatus);
 	// Products
 	const productsList = useSelector(selectAllProducts);
 	const productsStatus = useSelector(getProductsStatus);
-
-	useEffect(() => {
-		if (categoriesStatus === THUNK_STATUS.IDLE)
-			dispatch(asyncFetchCategories());
-		if (productsStatus === THUNK_STATUS.IDLE)
-			dispatch(asyncFetchProducts());
-	}, [categoriesStatus, productsStatus, dispatch]);
 
 	const handleOnSubmit = (e) => {
 		e.preventDefault();
