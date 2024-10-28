@@ -23,6 +23,7 @@ import {
 	asyncFetchProducts,
 	getProductsStatus,
 } from "../features/products/productsSlice";
+import Loader from "../components/Loader/Loader";
 
 function Category() {
 	const categoryNameRef = useRef();
@@ -58,6 +59,8 @@ function Category() {
 
 	return (
 		<>
+			<Loader loadingStatus={categoriesStatus} />
+
 			<section className="left-side-panel">
 				<CategoriesForm
 					onSubmit={handleOnSubmit}

@@ -23,6 +23,7 @@ import {
 	getProductsStatus,
 	selectAllProducts,
 } from "../features/products/productsSlice";
+import Loader from "../components/Loader/Loader";
 
 function Product() {
 	const amountRef = useRef();
@@ -53,6 +54,7 @@ function Product() {
 		const price = priceRef.current.value;
 		const category = categoryRef.current.value;
 		dispatch(asyncPostProduct({ name, amount, price, category }));
+
 		nameRef.current.value = null;
 		amountRef.current.value = null;
 		priceRef.current.value = null;
@@ -64,6 +66,8 @@ function Product() {
 
 	return (
 		<>
+			<Loader loadingStatus={productsStatus} />
+
 			<section className="left-side-panel">
 				<ProductsForm
 					amountRef={amountRef}
