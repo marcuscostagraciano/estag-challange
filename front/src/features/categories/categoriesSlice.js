@@ -43,33 +43,41 @@ const categoriesSlice = createSlice({
             .addCase(asyncFetchCategories.pending, (state) => {
                 state.status = THUNK_STATUS.LOADING;
             })
+            .addCase(asyncFetchCategories.rejected, (state, action) => {
+                state.status = THUNK_STATUS.IDLE;
+                state.error = action.error.message;
+            })
             .addCase(asyncFetchCategories.fulfilled, (state, action) => {
                 state.status = THUNK_STATUS.SUCCEDDED;
                 state.categories = state.categories.concat(action.payload);
             })
-            .addCase(asyncFetchCategories.rejected, (state, action) => {
-                state.status = THUNK_STATUS.FAILED;
-                state.error = action.error.message;
-            })
             // Delete
+            .addCase(asyncDeleteCategory.pending, (state, action) => {
+                state.status = THUNK_STATUS.LOADING;
+            })
+            .addCase(asyncDeleteCategory.rejected, (state, action) => {
+                state.status = THUNK_STATUS.IDLE;
+                state.error = action.payload;
+            })
             .addCase(asyncDeleteCategory.fulfilled, (state, action) => {
+                state.error = null;
+                state.status = THUNK_STATUS.SUCCEDDED;
                 state.categories = state.categories.filter(
                     (category) => category.code !== action.payload
                 );
-            })
-            .addCase(asyncDeleteCategory.rejected, (state, action) => {
-                state.error = action.payload;
             })
             // Post
             .addCase(asyncPostCategory.pending, (state, action) => {
                 state.status = THUNK_STATUS.LOADING;
             })
-            .addCase(asyncPostCategory.fulfilled, (state, action) => {
-                state.status = THUNK_STATUS.SUCCEDDED;
-                state.categories.push(action.payload);
-            })
             .addCase(asyncPostCategory.rejected, (state, action) => {
                 state.status = THUNK_STATUS.FAILED;
+                state.error = action.payload;
+            })
+            .addCase(asyncPostCategory.fulfilled, (state, action) => {
+                state.error = null;
+                state.status = THUNK_STATUS.SUCCEDDED;
+                state.categories.push(action.payload);
             });
     },
 });
@@ -99,19 +107,16 @@ const asyncDeleteCategory = createAsyncThunk(
             (product) => product.category_code === categoryID
         );
 
-        if (isUsed) {
-            console.log("dentro do if (isUsed)");
-
-            let data;
+        if (!isUsed) {
             try {
-                data = await Categories.deleteCategory(categoryID);
+                const data = await Categories.deleteCategory(categoryID);
                 return categoryID;
             } catch (error) {
                 console.error(error);
             }
-            alert("Category being used");
-            return rejectWithValue(data);
         }
+        alert("Category being used");
+        return rejectWithValue(HTTP_STATUS.FORBIDDEN);
     }
 );
 const asyncPostCategory = createAsyncThunk(

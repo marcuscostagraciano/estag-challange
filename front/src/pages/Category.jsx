@@ -36,7 +36,7 @@ function Category() {
 	const categoriesError = useSelector(getCategoriesError);
 
 	useEffect(() => {
-		if (categoriesStatus === THUNK_STATUS.IDLE)
+		if (!categoriesError && categoriesStatus === THUNK_STATUS.IDLE)
 			dispatch(asyncFetchCategories());
 		if (productsStatus === THUNK_STATUS.IDLE)
 			dispatch(asyncFetchProducts());
