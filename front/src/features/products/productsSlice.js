@@ -84,12 +84,25 @@ const asyncFetchProducts = createAsyncThunk(
 const asyncDeleteProduct = createAsyncThunk(
     `${sliceName}/deleteProduct`,
     async (productID, { getState, rejectWithValue }) => {
-        try {
-            const data = await Products.deleteProduct(productID);
-            return productID;
-        } catch (error) {
-            console.error(error);
+        const productsInOrderItem = getState().orderItem.orderItem;
+        const isProductInOrderItem = !!productsInOrderItem.find(
+            (product) => product.code === productID
+        );
+        const productsInCart = getState().cart.products;
+        const isProductInCart = !!productsInCart.find(
+            (product) => product.code === productID
+        );
+
+        if (!(isProductInOrderItem || isProductInCart)) {
+            try {
+                const data = await Products.deleteProduct(productID);
+                return productID;
+            } catch (error) {
+                console.error(error);
+            }
         }
+        alert("Product being used");
+        return rejectWithValue(HTTP_STATUS.FORBIDDEN);
     }
 );
 const asyncPostProduct = createAsyncThunk(
