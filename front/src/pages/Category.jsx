@@ -39,7 +39,7 @@ function Category() {
 			dispatch(asyncFetchCategories());
 		if (productsStatus === THUNK_STATUS.IDLE)
 			dispatch(asyncFetchProducts());
-	}, [categoriesStatus, productsStatus, dispatch, THUNK_STATUS]);
+	}, [categoriesStatus, productsStatus, dispatch]);
 
 	const handleOnSubmit = (e) => {
 		e.preventDefault();

@@ -82,7 +82,7 @@ const asyncPostProduct = createAsyncThunk(
         const category_code = productData.category;
 
         const isProductNameUsed = !!productsInState.find(
-            (product) => product.name == name
+            (product) => product.name === name
         );
         const isAmountValid = !!Number(amount) && 0 < amount;
         const isPriceValid = !!Number(price) && 0 < price;

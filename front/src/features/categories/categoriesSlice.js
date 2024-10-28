@@ -84,7 +84,7 @@ const asyncDeleteCategory = createAsyncThunk(
     async (categoryID, { getState, rejectWithValue }) => {
         const productsInState = getState().products.products;
         const isUsed = productsInState.find(
-            (product) => product.category_code == categoryID
+            (product) => product.category_code === categoryID
         );
 
         if (!isUsed) {
@@ -110,7 +110,7 @@ const asyncPostCategory = createAsyncThunk(
         const categoryTax = categoryData.tax;
 
         const isNameUsed = categoriesInState.find(
-            (category) => category.name == categoryName
+            (category) => category.name === categoryName
         );
         const isTaxInRange =
             !!Number(categoryTax) && 0 <= categoryTax && categoryTax <= 100;
