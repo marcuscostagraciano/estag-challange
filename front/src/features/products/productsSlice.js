@@ -21,6 +21,7 @@ const productsSlice = createSlice({
     reducers: {},
     extraReducers (builder) {
         builder
+            // Fetch
             .addCase(asyncFetchProducts.pending, (state) => {
                 state.status = THUNK_STATUS.LOADING;
             })
@@ -32,11 +33,13 @@ const productsSlice = createSlice({
                 state.status = THUNK_STATUS.FAILED;
                 state.error = action.error.message;
             })
+            // Delete
             .addCase(asyncDeleteProduct.fulfilled, (state, action) => {
                 state.products = state.products.filter(
                     (product) => product.code !== action.payload
                 );
             })
+            // Post
             .addCase(asyncPostProduct.fulfilled, (state, action) => {
                 state.products.push(action.payload);
             });
@@ -86,8 +89,6 @@ const asyncPostProduct = createAsyncThunk(
         );
         const isAmountValid = !!Number(amount) && 0 < amount;
         const isPriceValid = !!Number(price) && 0 < price;
-
-        console.log({ isProductNameUsed, isAmountValid, isPriceValid });
 
         if (!isProductNameUsed && isAmountValid && isPriceValid) {
             try {

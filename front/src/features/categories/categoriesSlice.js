@@ -39,25 +39,37 @@ const categoriesSlice = createSlice({
 
     extraReducers (builder) {
         builder
+            // Fetch
             .addCase(asyncFetchCategories.pending, (state) => {
                 state.status = THUNK_STATUS.LOADING;
             })
             .addCase(asyncFetchCategories.fulfilled, (state, action) => {
                 state.status = THUNK_STATUS.SUCCEDDED;
-
                 state.categories = state.categories.concat(action.payload);
             })
             .addCase(asyncFetchCategories.rejected, (state, action) => {
                 state.status = THUNK_STATUS.FAILED;
                 state.error = action.error.message;
             })
-            .addCase(asyncPostCategory.fulfilled, (state, action) => {
-                state.categories.push(action.payload);
-            })
+            // Delete
             .addCase(asyncDeleteCategory.fulfilled, (state, action) => {
                 state.categories = state.categories.filter(
                     (category) => category.code !== action.payload
                 );
+            })
+            .addCase(asyncDeleteCategory.rejected, (state, action) => {
+                state.error = action.payload;
+            })
+            // Post
+            .addCase(asyncPostCategory.pending, (state, action) => {
+                state.status = THUNK_STATUS.LOADING;
+            })
+            .addCase(asyncPostCategory.fulfilled, (state, action) => {
+                state.status = THUNK_STATUS.SUCCEDDED;
+                state.categories.push(action.payload);
+            })
+            .addCase(asyncPostCategory.rejected, (state, action) => {
+                state.status = THUNK_STATUS.FAILED;
             });
     },
 });
@@ -83,24 +95,25 @@ const asyncDeleteCategory = createAsyncThunk(
     `${sliceName}/deleteCategory`,
     async (categoryID, { getState, rejectWithValue }) => {
         const productsInState = getState().products.products;
-        const isUsed = productsInState.find(
+        const isUsed = !!productsInState.find(
             (product) => product.category_code === categoryID
         );
 
-        if (!isUsed) {
+        if (isUsed) {
+            console.log("dentro do if (isUsed)");
+
+            let data;
             try {
-                const data = await Categories.deleteCategory(categoryID);
+                data = await Categories.deleteCategory(categoryID);
                 return categoryID;
             } catch (error) {
                 console.error(error);
             }
+            alert("Category being used");
+            return rejectWithValue(data);
         }
-
-        alert("Category being used");
-        return rejectWithValue(HTTP_STATUS.FORBIDDEN);
     }
 );
-
 const asyncPostCategory = createAsyncThunk(
     `${sliceName}/postCategory`,
     async (categoryData, { getState, rejectWithValue }) => {
@@ -109,7 +122,7 @@ const asyncPostCategory = createAsyncThunk(
         const categoryName = categoryData.name;
         const categoryTax = categoryData.tax;
 
-        const isNameUsed = categoriesInState.find(
+        const isNameUsed = !!categoriesInState.find(
             (category) => category.name === categoryName
         );
         const isTaxInRange =
