@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 
 import {
     HTTP_STATUS,
@@ -68,6 +68,7 @@ const productsSlice = createSlice({
 const selectAllProducts = (state) => state.products.products;
 const getProductsError = (state) => state.products.error;
 const getProductsStatus = (state) => state.products.status;
+const getFirstProduct = (state) => state.products.products[0];
 
 // AsyncThunks
 const asyncFetchProducts = createAsyncThunk(
@@ -146,6 +147,7 @@ export {
     selectAllProducts,
     getProductsError,
     getProductsStatus,
+    getFirstProduct,
     // AsyncThunks
     asyncFetchProducts,
     asyncDeleteProduct,
