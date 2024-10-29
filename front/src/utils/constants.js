@@ -12,31 +12,21 @@ const PRODUCT_TABLE_HEADERS = tableHeaderFactory([
     ...BASE_TABLE_HEADER_W_PRODUCTS,
     "Category",
 ]);
-const SUITE_STORE_TABLE_HEADERS = tableHeaderFactory([
+const SUITE_STORE_TABLE_HEADERS = [
     ...BASE_TABLE_HEADER_W_PRODUCTS,
     "Total",
-]);
+    "Action",
+];
 
-const BASE_FIELDS = [
-    'code',
-    'name'
-];
-const CATEGORY_FIELDS = [
-    ...BASE_FIELDS,
-    'tax'
-];
-const PRODUCT_FIELDS = [
-    ...BASE_FIELDS,
-    'amount',
-    'price',
-    'category_code',
-];
+const BASE_FIELDS = ["code", "name"];
+const CATEGORY_FIELDS = [...BASE_FIELDS, "tax"];
+const PRODUCT_FIELDS = [...BASE_FIELDS, "amount", "price", "category_code"];
 
 const THUNK_STATUS = {
-    IDLE: 'idle',
-    LOADING: 'loading',
-    SUCCEDDED: 'succeeded',
-    FAILED: 'failed',
+    IDLE: "idle",
+    LOADING: "loading",
+    SUCCEDDED: "succeeded",
+    FAILED: "failed",
 };
 
 const HTTP_STATUS = {
