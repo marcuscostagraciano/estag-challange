@@ -23,4 +23,6 @@ export default cartSlice.reducer;
 export {
     // Selectors
     selectAllProducts,
+    selectTax,
+    selectTotalValue
 };
