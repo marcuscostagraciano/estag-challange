@@ -44,7 +44,7 @@ const Form = ({
 					id="amount-input"
 					title={
 						productCode
-							? "Amount to be bought"
+							? `Amount to be bought. Max: ${productMaxAmount}`
 							: "Select a product to input the amount"
 					}
 					placeholder="Amount"
