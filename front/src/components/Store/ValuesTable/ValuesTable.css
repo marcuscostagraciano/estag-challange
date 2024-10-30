@@ -1,0 +1,29 @@
+.bottom-side-table {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    table {
+        height: 20%;
+        grid-column: 3;
+        grid-row: 1;
+
+        td:first-of-type {
+            font-weight: bold;
+        }
+    }
+}
+
+.cancel-finish-button {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+
+    button {
+        /* Valores obtidos atravÃŠs do empirismo */
+        min-width: 40%;
+        height: 1.5rem;
+    }
+}

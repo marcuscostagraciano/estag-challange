@@ -1,3 +1,7 @@
+const readOnlyStyle = {
+	cursor: "not-allowed",
+};
+
 const Form = ({
 	onChange,
 	onSubmit,
@@ -56,6 +60,7 @@ const Form = ({
 					title="Product's category tax"
 					placeholder="Product's category tax"
 					value={productTax}
+					readOnly
 				/>
 				<input
 					type="number"
@@ -64,6 +69,7 @@ const Form = ({
 					title="Product's unitary price"
 					placeholder="Product's unitary price"
 					value={productPrice}
+					readOnly
 				/>
 				<input
 					type="submit"
