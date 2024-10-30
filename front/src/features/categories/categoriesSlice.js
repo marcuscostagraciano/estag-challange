@@ -104,7 +104,7 @@ const asyncDeleteCategory = createAsyncThunk(
     async (categoryID, { getState, rejectWithValue }) => {
         const productsInState = getState().products.products;
         const isUsed = !!productsInState.find(
-            (product) => product.category_code === categoryID
+            (product) => product.category.code === categoryID
         );
 
         if (!isUsed) {
