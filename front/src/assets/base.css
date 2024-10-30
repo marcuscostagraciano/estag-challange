@@ -103,7 +103,7 @@ button {
     }
 
     input:disabled,
-    input:read-only {
+    input:not([type=submit]):read-only {
         cursor: not-allowed;
         outline: none;
     }
