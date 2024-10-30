@@ -55,7 +55,11 @@ class Products
 
     private static function readProduct(int $product_code): array
     {
-        $sql = 'SELECT * FROM products WHERE code = :product_code';
+        $sql = 'SELECT p.code, amount, p.name, price, category_code, 
+            c.name AS category_name, tax AS category_tax
+            FROM products p INNER JOIN categories c
+            ON p.category_code = c.code
+            WHERE p.code = :product_code';
 
         try {
             $stmt = self::$conn->prepare($sql);
