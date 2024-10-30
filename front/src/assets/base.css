@@ -102,8 +102,10 @@ button {
         cursor: pointer;
     }
 
-    input:disabled {
+    input:disabled,
+    input:read-only {
         cursor: not-allowed;
+        outline: none;
     }
 
     .inputs {
