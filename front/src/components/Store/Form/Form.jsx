@@ -20,6 +20,7 @@ const Form = ({
 				</option>
 			);
 	});
+	const isProductsListEmpty = !!productsList.length;
 
 	return (
 		<>
@@ -75,7 +76,12 @@ const Form = ({
 					type="submit"
 					id="submit-button"
 					className="primary-bg"
-					value="Add Product"
+					value="Add Product to cart"
+					title={
+						!isProductsListEmpty
+							? "Register a Product to enable this button"
+							: ""
+					}
 					disabled={!productCode}
 				/>
 			</form>

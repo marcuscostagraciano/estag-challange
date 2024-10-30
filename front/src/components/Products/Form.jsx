@@ -13,6 +13,7 @@ const Form = ({
 			{category.name}
 		</option>
 	));
+	const isCategoriesListEmpty = !!categoriesList.length;
 
 	return (
 		<>
@@ -66,7 +67,13 @@ const Form = ({
 					type="submit"
 					id="submit-button"
 					className="primary-bg"
-					value="Add Category"
+					value="Add Product"
+					title={
+						!isCategoriesListEmpty
+							? "Register a Category to enable this button"
+							: ""
+					}
+					disabled={!isCategoriesListEmpty}
 				/>
 			</form>
 		</>
