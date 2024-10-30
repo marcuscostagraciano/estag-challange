@@ -106,8 +106,10 @@ class Products
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $category = json_decode($result['category'], true);
-            $result['category'] = $category[0];
+            if ($result) {
+                $category = json_decode($result['category'], true);
+                $result['category'] = $category[0];
+            }
 
             return $result ? $result : ResponseHandler::handleResponse(404, responseMessage: 'Product not found');
         } catch (PDOException $e) {
