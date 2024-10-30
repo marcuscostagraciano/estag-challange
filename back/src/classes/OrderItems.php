@@ -61,11 +61,38 @@ class OrderItems
 
     private static function readOrderItems(): array
     {
-        try {
-            $stmt = self::$conn->query('SELECT * FROM order_item ORDER BY code ASC');
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sql = 'SELECT
+            oi.code, oi.amount, oi.price, oi.tax, oi.order_code, 
+            json_agg(
+                json_build_object(
+                    \'code\', p.code,
+                    \'amount\', p.amount,
+                    \'name\', p.name,
+                    \'price\', p.price,
+                    \'category_code\', p.category_code
+                )) AS product
+        FROM
+            order_item oi
+        LEFT JOIN
+            products p
+        ON
+            oi.product_code = p.code
+        GROUP BY
+            oi.code, oi.amount, oi.price, oi.tax
+        ORDER BY
+            oi.code';
 
-            return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
+        try {
+            $stmt = self::$conn->query($sql);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($results as $key => $result) {
+                $product = json_decode($result['product'], true);
+                $result['product'] = $product[0];
+                $results[$key] = $result;
+            }
+
+            return ResponseHandler::handleResponse(200, responseArray: $results ?? []);
         } catch (PDOException $e) {
             return PDOExceptionHandler::handleException($e);
         }
@@ -73,13 +100,51 @@ class OrderItems
 
     private static function readOrderItem(int $order_code): array
     {
-        $sql = 'SELECT * FROM order_item WHERE code = :order_code';
+        $sql = '
+        SELECT
+            oi.code, oi.amount, oi.price, oi.tax,
+            json_agg(
+                json_build_object(
+                    \'code\', o.code,
+                    \'total\', o.total,
+                    \'tax\', o.tax
+                )) AS order,
+            json_agg(
+                json_build_object(
+                    \'code\', p.code,
+                    \'amount\', p.amount,
+                    \'name\', p.name,
+                    \'price\', p.price,
+                    \'category_code\', p.category_code
+                )) AS product
+        FROM
+            order_item oi
+        LEFT JOIN
+            products p
+        ON
+            oi.product_code = p.code
+        LEFT JOIN
+            orders o
+        ON
+            oi.order_code = o.code
+        WHERE
+            oi.code = :order_code
+        GROUP BY
+            oi.code, oi.amount, oi.price, oi.tax
+        ';
 
         try {
             $stmt = self::$conn->prepare($sql);
             $stmt->bindParam(':order_code', $order_code, PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                $product = json_decode($result['product'], true);
+                $result['product'] = $product[0];
+                $order = json_decode($result['order'], true);
+                $result['order'] = $order[0];
+            }
 
             return $result ? $result : ResponseHandler::handleResponse(404, responseMessage: 'Order_item not found');
         } catch (PDOException $e) {
