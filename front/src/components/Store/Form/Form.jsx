@@ -1,3 +1,5 @@
+import "./Form.css";
+
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -73,40 +75,42 @@ const Form = () => {
 					</option>
 					{renderProductsList}
 				</select>
-				<input
-					type="number"
-					name="amount-input"
-					id="amount-input"
-					title={
-						selectedProductCode
-							? `Amount to be bought. Max: ${selectedProductMaxAmount}`
-							: "Select a product to input the amount"
-					}
-					placeholder="Amount"
-					min={1}
-					max={selectedProductMaxAmount}
-					ref={selectedProductAmount}
-					required
-					disabled={!selectedProductCode}
-				/>
-				<input
-					type="number"
-					name="tax-input"
-					id="tax-input"
-					title="Product's category tax"
-					placeholder="Product's category tax"
-					value={selectedProductTax}
-					readOnly
-				/>
-				<input
-					type="number"
-					name="unitary-price-input"
-					id="unitary-price-input"
-					title="Product's unitary price"
-					placeholder="Product's unitary price"
-					value={selectedProductPrice}
-					readOnly
-				/>
+				<section className="inputs">
+					<input
+						type="number"
+						name="amount-input"
+						id="amount-input"
+						title={
+							selectedProductCode
+								? `Amount to be bought. Max: ${selectedProductMaxAmount}`
+								: "Select a product to input the amount"
+						}
+						placeholder="Amount"
+						min={1}
+						max={selectedProductMaxAmount}
+						ref={selectedProductAmount}
+						required
+						disabled={!selectedProductCode}
+					/>
+					<input
+						type="number"
+						name="tax-input"
+						id="tax-input"
+						title="Product's category tax"
+						placeholder="Product's category tax"
+						value={selectedProductTax}
+						readOnly
+					/>
+					<input
+						type="number"
+						name="unitary-price-input"
+						id="unitary-price-input"
+						title="Product's unitary price"
+						placeholder="Product's unitary price"
+						value={selectedProductPrice}
+						readOnly
+					/>
+				</section>
 				<input
 					type="submit"
 					id="submit-button"
