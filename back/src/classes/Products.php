@@ -44,10 +44,35 @@ class Products
     private static function readProducts(): array
     {
         try {
-            $stmt = self::$conn->query('SELECT * FROM products ORDER BY code ASC');
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = self::$conn->query('
+            SELECT
+                p.code, p.amount, p.name, p.price,
+                json_agg(
+                    json_build_object(
+                        \'code\', c.code,
+                        \'name\', c.name,
+                        \'tax\', c.tax
+                    )) AS category
+            FROM
+                products p
+            INNER JOIN
+                categories c
+            ON
+                p.category_code = c.code
+            GROUP BY
+                p.code, p.amount, p.name, p.price
+            ORDER BY
+                p.code
+            ');
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            return ResponseHandler::handleResponse(200, responseArray: $result ?? []);
+            foreach ($results as $key => $result) {
+                $category = json_decode($result['category'], true);
+                $result['category'] = $category[0];
+                $results[$key] = $result;
+            }
+
+            return ResponseHandler::handleResponse(200, responseArray: $results ?? []);
         } catch (PDOException $e) {
             return PDOExceptionHandler::handleException($e);
         }
@@ -55,17 +80,34 @@ class Products
 
     private static function readProduct(int $product_code): array
     {
-        $sql = 'SELECT p.code, amount, p.name, price, category_code, 
-            c.name AS category_name, tax AS category_tax
-            FROM products p INNER JOIN categories c
-            ON p.category_code = c.code
-            WHERE p.code = :product_code';
+        $sql = '
+        SELECT
+            p.code, p.amount, p.name, p.price,
+            json_agg(
+                json_build_object(
+                    \'code\', c.code,
+                    \'name\', c.name,
+                    \'tax\', c.tax
+                )) AS category
+        FROM
+            products p
+        INNER JOIN
+            categories c
+        ON
+            p.category_code = c.code
+        WHERE
+            p.code = :product_code
+        GROUP BY
+            p.code, p.amount, p.name, p.price';
 
         try {
             $stmt = self::$conn->prepare($sql);
             $stmt->bindParam(':product_code', $product_code, PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $category = json_decode($result['category'], true);
+            $result['category'] = $category[0];
 
             return $result ? $result : ResponseHandler::handleResponse(404, responseMessage: 'Product not found');
         } catch (PDOException $e) {
