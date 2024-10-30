@@ -1,14 +1,11 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-	PRODUCT_FIELDS,
-	PRODUCT_TABLE_HEADERS,
-	THUNK_STATUS,
-} from "../utils/constants";
+import { getListObject } from "../utils/";
 
-import ItemsTable from "../components/Table";
+import Loader from "../components/Loader/Loader";
 import ProductsForm from "../components/Products/Form";
+import Table from "../components/Products/Table";
 
 import { selectAllCategories } from "../features/categories/categoriesSlice";
 
@@ -18,7 +15,6 @@ import {
 	getProductsStatus,
 	selectAllProducts,
 } from "../features/products/productsSlice";
-import Loader from "../components/Loader/Loader";
 
 function Product() {
 	const amountRef = useRef();
@@ -39,8 +35,11 @@ function Product() {
 		const name = nameRef.current.value;
 		const amount = amountRef.current.value;
 		const price = priceRef.current.value;
-		const category = categoryRef.current.value;
-		dispatch(asyncPostProduct({ name, amount, price, category }));
+		const categoryCode = categoryRef.current.value;
+		const category = getListObject(categoriesList, categoryCode);
+		dispatch(
+			asyncPostProduct({ name, amount, price, categoryCode, category })
+		);
 
 		nameRef.current.value = null;
 		amountRef.current.value = null;
@@ -69,10 +68,8 @@ function Product() {
 			<div className="middle-divisor" />
 
 			<section className="right-side-panel">
-				<ItemsTable
-					tableHeaders={PRODUCT_TABLE_HEADERS}
+				<Table
 					fetchStatus={productsStatus}
-					itemsProperties={PRODUCT_FIELDS}
 					itemList={productsList}
 					onDelete={handleOnDelete}
 				/>

@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import {
+    createAsyncThunk,
+    createSelector,
+    createSlice,
+} from "@reduxjs/toolkit";
 
 import {
     HTTP_STATUS,
@@ -114,7 +118,8 @@ const asyncPostProduct = createAsyncThunk(
         const name = productData.name;
         const amount = productData.amount;
         const price = productData.price;
-        const category_code = productData.category;
+        const category_code = productData.categoryCode;
+        const category = productData.category;
 
         const isProductNameUsed = !!productsInState.find(
             (product) => product.name === name
@@ -130,7 +135,7 @@ const asyncPostProduct = createAsyncThunk(
                     price,
                     category_code
                 );
-                return data;
+                return { ...data, category };
             } catch (error) {
                 console.error(error);
             }
