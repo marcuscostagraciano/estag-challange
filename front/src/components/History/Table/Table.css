@@ -1,0 +1,34 @@
+section.site-body {
+    justify-self: center;
+    width: 80%;
+}
+
+#history-table {
+    border-collapse: collapse;
+
+    thead {
+        th {
+            border-bottom: solid var(--SECONDARY-COLOR);
+
+            &:not(:last-of-type) {
+                border-right: solid var(--SECONDARY-COLOR);
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            cursor: alias;
+
+            &:hover {
+                background-color: var(--TERTIARY-COLOR);
+            }
+        }
+
+        td {
+            &:not(:last-of-type) {
+                border-right: dotted var(--SECONDARY-COLOR);
+            }
+        }
+    }
+}
