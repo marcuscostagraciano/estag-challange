@@ -1,12 +1,16 @@
-import "./Form.css";
-
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import "./Form.css";
+
 import { getListObject } from "../../../utils";
 
-import { selectAllProducts } from "../../../features/products/productsSlice";
+import {
+	patchProductAmount,
+	selectAllProducts,
+} from "../../../features/products/productsSlice";
 import { addProduct as addProductToCart } from "../../../features/cart/cartSlice";
+import { PATCH_OPERATIONS } from "../../../utils/constants";
 
 const Form = () => {
 	const dispatch = useDispatch();
@@ -27,6 +31,7 @@ const Form = () => {
 
 		setSelectedProduct(product);
 		setSelectedProductPrice(product.price);
+
 		setSelectedProductMaxAmount(product.amount);
 		setSelectedProductTax(product.category.tax);
 	};
@@ -34,6 +39,7 @@ const Form = () => {
 	const handleOnSubmit = (e) => {
 		e.preventDefault();
 		const amount = Number(selectedProductAmount.current.value);
+		const newAmount = selectedProductMaxAmount - amount;
 		const productToDispatch = {
 			...selectedProduct,
 			amount,
@@ -46,13 +52,25 @@ const Form = () => {
 				tax: selectedProductTax,
 			})
 		);
+		dispatch(
+			patchProductAmount({
+				...productToDispatch,
+				operation: PATCH_OPERATIONS.SUB,
+			})
+		);
+		setSelectedProductMaxAmount(newAmount);
+
 		selectedProductAmount.current.value = "";
 	};
 
 	const renderProductsList = productsList.map((product) => {
 		if (product.amount)
 			return (
-				<option key={product.code} value={product.code}>
+				<option
+					key={product.code}
+					value={product.code}
+					disabled={!!!product.amount}
+				>
 					{product.name}
 				</option>
 			);
@@ -82,7 +100,7 @@ const Form = () => {
 						id="amount-input"
 						title={
 							selectedProductCode
-								? `Amount to be bought. Max: ${selectedProductMaxAmount}`
+								? `Amount to be bought`
 								: "Select a product to input the amount"
 						}
 						placeholder="Amount"
