@@ -40,6 +40,11 @@ const INITIAL_STATE = {
     status: THUNK_STATUS.IDLE,
 };
 
+const PATCH_OPERATIONS = {
+    ADD: 'ADD',
+    SUB: 'SUB',
+};
+
 export {
     // Table Headers
     CATEGORY_TABLE_HEADERS,
@@ -53,4 +58,5 @@ export {
     // Status
     THUNK_STATUS,
     HTTP_STATUS,
+    PATCH_OPERATIONS,
 };
