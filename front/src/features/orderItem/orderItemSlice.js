@@ -22,7 +22,7 @@ const orderItemSlice = createSlice({
         addProductToCart: {
             // The action will be returned 'prepared' from the 'prepare' action
             reducer (state, action) {
-                state.categories.push(action.payload);
+                state.orderItem.push(action.payload);
             },
             // Use this 'prepare' action to handle the input validation?
             prepare (code, name, tax) {
@@ -50,35 +50,35 @@ const orderItemSlice = createSlice({
             .addCase(asyncFetchOrderItems.fulfilled, (state, action) => {
                 state.status = THUNK_STATUS.SUCCEDDED;
                 state.orderItem = state.orderItem.concat(action.payload);
+            })
+            //     // Delete
+            //     .addCase(asyncDeleteOrderItem.pending, (state, action) => {
+            //         state.status = THUNK_STATUS.LOADING;
+            //     })
+            //     .addCase(asyncDeleteOrderItem.rejected, (state, action) => {
+            //         state.status = THUNK_STATUS.IDLE;
+            //         state.error = action.payload;
+            //     })
+            //     .addCase(asyncDeleteOrderItem.fulfilled, (state, action) => {
+            //         state.error = null;
+            //         state.status = THUNK_STATUS.SUCCEDDED;
+            //         state.orderItem = state.orderItem.filter(
+            //             (category) => category.code !== action.payload
+            //         );
+            //     })
+            // Post
+            .addCase(asyncPostOrderItem.pending, (state, action) => {
+                state.status = THUNK_STATUS.LOADING;
+            })
+            .addCase(asyncPostOrderItem.rejected, (state, action) => {
+                state.status = THUNK_STATUS.FAILED;
+                state.error = action.payload;
+            })
+            .addCase(asyncPostOrderItem.fulfilled, (state, action) => {
+                state.error = null;
+                state.status = THUNK_STATUS.SUCCEDDED;
+                state.orderItem.push(action.payload);
             });
-        //     // Delete
-        //     .addCase(asyncDeleteCategory.pending, (state, action) => {
-        //         state.status = THUNK_STATUS.LOADING;
-        //     })
-        //     .addCase(asyncDeleteCategory.rejected, (state, action) => {
-        //         state.status = THUNK_STATUS.IDLE;
-        //         state.error = action.payload;
-        //     })
-        //     .addCase(asyncDeleteCategory.fulfilled, (state, action) => {
-        //         state.error = null;
-        //         state.status = THUNK_STATUS.SUCCEDDED;
-        //         state.categories = state.categories.filter(
-        //             (category) => category.code !== action.payload
-        //         );
-        //     })
-        //     // Post
-        //     .addCase(asyncPostCategory.pending, (state, action) => {
-        //         state.status = THUNK_STATUS.LOADING;
-        //     })
-        //     .addCase(asyncPostCategory.rejected, (state, action) => {
-        //         state.status = THUNK_STATUS.FAILED;
-        //         state.error = action.payload;
-        //     })
-        //     .addCase(asyncPostCategory.fulfilled, (state, action) => {
-        //         state.error = null;
-        //         state.status = THUNK_STATUS.SUCCEDDED;
-        //         state.categories.push(action.payload);
-        //     });
     },
 });
 
@@ -99,8 +99,8 @@ const asyncFetchOrderItems = createAsyncThunk(
         }
     }
 );
-// const asyncDeleteCategory = createAsyncThunk(
-//     `${sliceName}/deleteCategory`,
+// const asyncDeleteOrderItem = createAsyncThunk(
+//     `${sliceName}/deleteOrderItem`,
 //     async (categoryID, { getState, rejectWithValue }) => {
 //         const productsInState = getState().products.products;
 //         const isUsed = !!productsInState.find(
@@ -109,46 +109,37 @@ const asyncFetchOrderItems = createAsyncThunk(
 
 //         if (!isUsed) {
 //             try {
-//                 const data = await OrderItem.deleteCategory(categoryID);
+//                 const data = await OrderItem.deleteOrderItem(categoryID);
 //                 return categoryID;
 //             } catch (error) {
 //                 console.error(error);
 //             }
 //         }
-//         alert("Category being used");
+//         alert("OrderItem being used");
 //         return rejectWithValue(HTTP_STATUS.FORBIDDEN);
 //     }
 // );
-// const asyncPostCategory = createAsyncThunk(
-//     `${sliceName}/postCategory`,
-//     async (categoryData, { getState, rejectWithValue }) => {
-//         const categoriesInState = getState().categories.categories;
+const asyncPostOrderItem = createAsyncThunk(
+    `${sliceName}/postOrderItem`,
+    async (orderItemData, { getState, rejectWithValue }) => {
+        const orderData = orderItemData.order;
+        const productData = orderItemData.product;
 
-//         const categoryName = categoryData.name;
-//         const categoryTax = categoryData.tax;
+        try {
+            const data = await OrderItem.postOrderItem(
+                orderData.code,
+                productData.code,
+                productData.amount
+            );
 
-//         const isNameUsed = !!categoriesInState.find(
-//             (category) => category.name === categoryName
-//         );
-//         const isTaxInRange =
-//             !!Number(categoryTax) && 0 <= categoryTax && categoryTax <= 100;
-
-//         if (!isNameUsed && isTaxInRange) {
-//             try {
-//                 const data = await OrderItem.postCategory(
-//                     categoryName,
-//                     categoryTax
-//                 );
-//                 return data;
-//             } catch (error) {
-//                 console.error(error);
-//             }
-//         }
-
-//         alert("Something went wrong! Please reenter your inputs!");
-//         return rejectWithValue(HTTP_STATUS.FORBIDDEN);
-//     }
-// );
+            return data;
+        } catch (error) {
+            console.error(error);
+            alert("Something went wrong! Please reenter your inputs!");
+            return rejectWithValue(HTTP_STATUS.FORBIDDEN);
+        }
+    }
+);
 
 export default orderItemSlice.reducer;
 export const { addProductToCart } = orderItemSlice.actions;
@@ -159,6 +150,6 @@ export {
     getOrderItemStatus,
     // Thunks
     asyncFetchOrderItems,
-    // asyncDeleteCategory,
-    // asyncPostCategory,
+    // asyncDeleteOrderItem,
+    asyncPostOrderItem,
 };
