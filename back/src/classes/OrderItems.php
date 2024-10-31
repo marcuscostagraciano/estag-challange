@@ -66,7 +66,6 @@ class OrderItems
             json_agg(
                 json_build_object(
                     \'code\', p.code,
-                    \'amount\', p.amount,
                     \'name\', p.name,
                     \'price\', p.price,
                     \'category_code\', p.category_code
