@@ -8,9 +8,15 @@ import {
     HTTP_STATUS,
     INITIAL_STATE,
     THUNK_STATUS,
+    PATCH_OPERATIONS,
 } from "../../utils/constants";
 
 import Products from "../../services/Products";
+
+const returnNewAmount = (operation, oldAmount, newAmount) => {
+    if (operation === PATCH_OPERATIONS.SUB) return oldAmount - newAmount;
+    return oldAmount + newAmount;
+};
 
 const sliceName = "products";
 const initialState = {
@@ -22,7 +28,24 @@ const productsSlice = createSlice({
     name: sliceName,
     initialState,
 
-    reducers: {},
+    reducers: {
+        patchProductAmount (state, payload) {
+            const codeToPatch = payload.payload.code;
+
+            state.products.filter((product) =>
+                product.code === codeToPatch
+                    ? {
+                        ...product,
+                        amount: (product.amount = returnNewAmount(
+                            payload.payload.operation,
+                            product.amount,
+                            payload.payload.amount
+                        )),
+                    }
+                    : product
+            );
+        },
+    },
     extraReducers (builder) {
         builder
             // Fetch
@@ -146,6 +169,7 @@ const asyncPostProduct = createAsyncThunk(
     }
 );
 
+export const { patchProductAmount } = productsSlice.actions;
 export default productsSlice.reducer;
 export {
     // Selectors
