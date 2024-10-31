@@ -17,7 +17,7 @@ const SUITE_STORE_TABLE_HEADERS = [
     "Total",
     "Action",
 ];
-const HISTORY_TABLE_HEADERS = tableHeaderFactory(["Tax ($)", "Total ($)"]);
+const HISTORY_TABLE_HEADERS = ["#", "Tax ($)", "Total ($)"];
 
 const BASE_FIELDS = ["code", "name"];
 const CATEGORY_FIELDS = [...BASE_FIELDS, "tax"];
