@@ -15,7 +15,7 @@ class OrderItems
     {
         try {
             $product = Products::handleProductRequest(['METHOD' => 'GET', 'ID_TO_CONSULT' => $product_code]);
-            $category = Categories::handleCategoryRequest(['METHOD' => 'GET', 'ID_TO_CONSULT' => $product['category_code']]);
+            $category = $product['category'];
             $productPrice = floatval($product['price']) * $amount;
             $categoryTax = floatval($category['tax']) / 100;
             $productTax = $productPrice * $categoryTax;
