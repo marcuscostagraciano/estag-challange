@@ -17,6 +17,7 @@ const SUITE_STORE_TABLE_HEADERS = [
     "Total",
     "Action",
 ];
+const HISTORY_TABLE_HEADERS = tableHeaderFactory(["Tax ($)", "Total ($)"]);
 
 const BASE_FIELDS = ["code", "name"];
 const CATEGORY_FIELDS = [...BASE_FIELDS, "tax"];
@@ -50,6 +51,7 @@ export {
     CATEGORY_TABLE_HEADERS,
     PRODUCT_TABLE_HEADERS,
     SUITE_STORE_TABLE_HEADERS,
+    HISTORY_TABLE_HEADERS,
     // Objects fields
     CATEGORY_FIELDS,
     PRODUCT_FIELDS,
