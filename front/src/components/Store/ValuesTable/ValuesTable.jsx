@@ -7,8 +7,12 @@ import {
 	selectTax,
 	selectTotalValue,
 } from "../../../features/cart/cartSlice";
+import { patchProductAmount } from "../../../features/products/productsSlice";
+import { PATCH_OPERATIONS } from "../../../utils/constants";
 
-const ValuesTable = ({ areProductsInList }) => {
+const ValuesTable = ({ productsList }) => {
+	const areProductsInList = !!productsList.length;
+
 	const dispatch = useDispatch();
 	const tax = useSelector(selectTax);
 	const total = useSelector(selectTotalValue);
@@ -18,7 +22,19 @@ const ValuesTable = ({ areProductsInList }) => {
 			"Are you sure you want to cancel the purchase?"
 		);
 
-		if (confirmation) dispatch(clearCart());
+		if (confirmation) {
+			const oldCart = [...productsList];
+
+			oldCart.forEach((product) => {
+				dispatch(
+					patchProductAmount({
+						...product,
+						operation: PATCH_OPERATIONS.ADD,
+					})
+				);
+			});
+			dispatch(clearCart());
+		}
 	};
 
 	return (
@@ -41,7 +57,9 @@ const ValuesTable = ({ areProductsInList }) => {
 			<section
 				className="cancel-finish-button"
 				title={
-					!areProductsInList ? "Add Products to use the buttons" : ""
+					!areProductsInList
+						? "Add Products to enable the buttons"
+						: ""
 				}
 			>
 				<button

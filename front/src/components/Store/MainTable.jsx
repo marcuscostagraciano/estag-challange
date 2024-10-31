@@ -2,12 +2,16 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ValuesTable from "./ValuesTable/ValuesTable";
 
-import { SUITE_STORE_TABLE_HEADERS } from "../../utils/constants";
+import {
+	PATCH_OPERATIONS,
+	SUITE_STORE_TABLE_HEADERS,
+} from "../../utils/constants";
 
 import {
 	removeProduct,
-	selectAllProducts,
+	selectAllProductsFromCart,
 } from "../../features/cart/cartSlice";
+import { patchProductAmount } from "../../features/products/productsSlice";
 
 const Header = () => (
 	<thead>
@@ -21,9 +25,18 @@ const Header = () => (
 
 const Body = ({ productsList }) => {
 	const dispatch = useDispatch();
+	const cartProductsList = useSelector(selectAllProductsFromCart);
 
 	const handleOnDelete = (objectIndex) => {
 		dispatch(removeProduct(objectIndex));
+		const lastRemovedProduct = cartProductsList.at(objectIndex);
+
+		dispatch(
+			patchProductAmount({
+				...lastRemovedProduct,
+				operation: PATCH_OPERATIONS.ADD,
+			})
+		);
 	};
 
 	const productsTRs = productsList.map((product, index) => (
@@ -45,8 +58,7 @@ const Body = ({ productsList }) => {
 };
 
 const Table = () => {
-	const productsList = useSelector(selectAllProducts);
-	const areProductsInList = !!productsList.length;
+	const productsList = useSelector(selectAllProductsFromCart);
 
 	return (
 		<>
@@ -54,7 +66,7 @@ const Table = () => {
 				<Header />
 				<Body productsList={productsList} />
 			</table>
-			<ValuesTable areProductsInList={areProductsInList} />
+			<ValuesTable productsList={productsList} />
 		</>
 	);
 };
