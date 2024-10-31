@@ -28,6 +28,8 @@ const Body = ({ productsList }) => {
 	const cartProductsList = useSelector(selectAllProductsFromCart);
 
 	const handleOnDelete = (objectIndex) => {
+		if (cartProductsList.length == 1) window.location.reload();
+
 		dispatch(removeProduct(objectIndex));
 		const lastRemovedProduct = cartProductsList.at(objectIndex);
 

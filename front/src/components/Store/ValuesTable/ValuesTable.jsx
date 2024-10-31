@@ -2,13 +2,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import "./ValuesTable.css";
 
-import {
-	clearCart,
-	selectTax,
-	selectTotalValue,
-} from "../../../features/cart/cartSlice";
-import { patchProductAmount } from "../../../features/products/productsSlice";
-import { PATCH_OPERATIONS } from "../../../utils/constants";
+import { selectTax, selectTotalValue } from "../../../features/cart/cartSlice";
+import { asyncPostOrder } from "../../../features/orders/ordersSlice";
+import { asyncPostOrderItem } from "../../../features/orderItem/orderItemSlice";
+import Orders from "../../../services/Orders";
+import Products from "../../../services/Products";
 
 const ValuesTable = ({ productsList }) => {
 	const areProductsInList = !!productsList.length;
@@ -22,18 +20,38 @@ const ValuesTable = ({ productsList }) => {
 			"Are you sure you want to cancel the purchase?"
 		);
 
-		if (confirmation) {
-			const oldCart = [...productsList];
+		if (confirmation) window.location.reload();
+	};
 
-			oldCart.forEach((product) => {
-				dispatch(
-					patchProductAmount({
-						...product,
-						operation: PATCH_OPERATIONS.ADD,
-					})
+	const handlePurchaseSubmit = async () => {
+		const confirmation = window.confirm(
+			"Are you sure you want to submit the purchase?"
+		);
+
+		if (confirmation) {
+			const cart = [...productsList];
+			const order = (await dispatch(asyncPostOrder())).payload;
+
+			const operationsPromises = cart.map(async (product) => {
+				// Cria o OrderItem
+				const orderItem = (
+					await dispatch(asyncPostOrderItem({ order, product }))
+				).payload;
+				// Altera o preço do Order
+				const totalPriceOrderItem = orderItem.price + orderItem.tax;
+				await Orders.putOrder(
+					order.code,
+					totalPriceOrderItem,
+					orderItem.tax
 				);
+				// Altera a quantidade de Produtos
+				await Products.patchProduct(product.code, product.amount);
 			});
-			dispatch(clearCart());
+
+			Promise.all(operationsPromises).then(() => {
+				alert("Successfully bought!");
+				window.location.reload();
+			});
 		}
 	};
 
@@ -69,7 +87,11 @@ const ValuesTable = ({ productsList }) => {
 				>
 					Cancel purchase
 				</button>
-				<button className="primary-bg" disabled={!areProductsInList}>
+				<button
+					className="primary-bg"
+					onClick={handlePurchaseSubmit}
+					disabled={!areProductsInList}
+				>
 					Finish purchase
 				</button>
 			</section>
