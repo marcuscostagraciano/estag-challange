@@ -1,15 +1,10 @@
-import { useSelector } from "react-redux";
-
 import "./Table.css";
 
 import { HISTORY_TABLE_HEADERS } from "../../../utils/constants";
 
-import { selectAllOrders } from "../../../features/orders/ordersSlice";
-import { selectAllOrderItem } from "../../../features/orderItem/orderItemSlice";
-
 const Header = () => {
 	const renderHeader = HISTORY_TABLE_HEADERS.map((header, index) => (
-		<td key={index}>{header}</td>
+		<th key={index}>{header}</th>
 	));
 
 	return (
@@ -19,28 +14,18 @@ const Header = () => {
 	);
 };
 
-const Body = () => {
-	const orders = useSelector(selectAllOrders);
-	const orderItems = useSelector(selectAllOrderItem);
-
+const Body = ({ ordersList, setOrderCode, setIsModalVisible }) => {
 	const handleViewOrder = (orderCode) => {
-		console.log({ orderCode, orders, orderItems });
+		setOrderCode(orderCode);
+		setIsModalVisible(true);
 	};
 
-	const renderBody = orders.map((order) => {
+	const renderBody = ordersList.map((order) => {
 		return (
-			<tr key={order.code}>
+			<tr key={order.code} onClick={() => handleViewOrder(order.code)}>
 				<td>{order.code}</td>
 				<td>{order.tax}</td>
 				<td>{order.total}</td>
-				<td>
-					<button
-						className="delete-btns"
-						onClick={() => handleViewOrder(order.code)}
-					>
-						View order
-					</button>
-				</td>
 			</tr>
 		);
 	});
@@ -48,15 +33,16 @@ const Body = () => {
 	return <tbody>{renderBody}</tbody>;
 };
 
-const Table = () => {
+const Table = ({ ordersList, setOrderCode, setIsModalVisible }) => {
 	return (
-		<section className="site-body">
-			{/* <Table /> */}
-			<table id="history-table">
-				<Header />
-				<Body />
-			</table>
-		</section>
+		<table id="history-table">
+			<Header />
+			<Body
+				ordersList={ordersList}
+				setOrderCode={setOrderCode}
+				setIsModalVisible={setIsModalVisible}
+			/>
+		</table>
 	);
 };
 
