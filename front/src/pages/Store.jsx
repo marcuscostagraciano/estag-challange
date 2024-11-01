@@ -9,8 +9,8 @@ import { getListObject } from "../utils";
 import { PATCH_OPERATIONS } from "../utils/constants";
 
 import {
-	addProduct as addProductToCart,
-	removeProduct as removeProductFromCart,
+	addProductToCart,
+	removeProductFromCartByIndex as removeProductFromCart,
 	selectAllProductsFromCart,
 } from "../features/cart/cartSlice";
 import {

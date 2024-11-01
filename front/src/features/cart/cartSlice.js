@@ -12,7 +12,7 @@ const cartSlice = createSlice({
     initialState,
 
     reducers: {
-        addProduct (state, payload) {
+        addProductToCart (state, payload) {
             const product = payload.payload;
 
             const taxPayed = (product.total * product.category.tax) / 100;
@@ -20,7 +20,7 @@ const cartSlice = createSlice({
             state.total += product.total + taxPayed;
             state.products.push({ ...product, taxPayed });
         },
-        removeProduct (state, payload) {
+        removeProductFromCartByIndex (state, payload) {
             const positionToBeRemoved = payload.payload;
             const lastRemovedProduct = state.products.splice(
                 positionToBeRemoved,
@@ -32,7 +32,7 @@ const cartSlice = createSlice({
             state.tax -= lastRemovedProduct.taxPayed;
             state.total -= totalPayed;
         },
-        clearCart (state) {
+        resetCart (state) {
             state.products = [];
             state.tax = 0;
             state.total = 0;
@@ -45,7 +45,7 @@ const selectAllProductsFromCart = (state) => state.cart.products;
 const selectTax = (state) => state.cart.tax;
 const selectTotalValue = (state) => state.cart.total;
 
-export const { addProduct, removeProduct, clearCart } = cartSlice.actions;
+export const { addProductToCart, removeProductFromCartByIndex, resetCart } = cartSlice.actions;
 export default cartSlice.reducer;
 export {
     // Selectors
