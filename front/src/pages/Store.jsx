@@ -5,20 +5,26 @@ import Form from "../components/Store/Form/Form";
 import Loader from "../components/Loader/Loader";
 import MainTable from "../components/Store/MainTable";
 
+import { getListObject } from "../utils";
+import { PATCH_OPERATIONS } from "../utils/constants";
+
+import {
+	addProduct as addProductToCart,
+	removeProduct as removeProductFromCart,
+	selectAllProductsFromCart,
+} from "../features/cart/cartSlice";
 import {
 	getProductsStatus,
 	patchProductAmount,
 	selectAllProducts,
 } from "../features/products/productsSlice";
-import { getListObject } from "../utils";
-import { addProduct } from "../features/cart/cartSlice";
-import { PATCH_OPERATIONS } from "../utils/constants";
 
 const Store = () => {
 	const productsStatus = useSelector(getProductsStatus);
 
 	const dispatch = useDispatch();
 	const productsList = useSelector(selectAllProducts);
+	const cartProductsList = useSelector(selectAllProductsFromCart);
 
 	const selectedProductAmount = useRef();
 	const [selectedProduct, setSelectedProduct] = useState();
@@ -42,7 +48,7 @@ const Store = () => {
 			total: amount * selectedProduct.price,
 		};
 
-		dispatch(addProduct(productToDispatch));
+		dispatch(addProductToCart(productToDispatch));
 		dispatch(
 			patchProductAmount({
 				...productToDispatch,
@@ -52,6 +58,24 @@ const Store = () => {
 		setSelectedProductMaxAmount(newAmount);
 
 		selectedProductAmount.current.value = "";
+	};
+
+	const handleOnDelete = (objectIndex) => {
+		dispatch(removeProductFromCart(objectIndex));
+		const removedProduct = cartProductsList.at(objectIndex);
+
+		if (removedProduct.code === selectedProduct.code) {
+			const newSelectedProductMaxAmount =
+				selectedProductMaxAmount + removedProduct.amount;
+			setSelectedProductMaxAmount(newSelectedProductMaxAmount);
+		}
+
+		dispatch(
+			patchProductAmount({
+				...removedProduct,
+				operation: PATCH_OPERATIONS.ADD,
+			})
+		);
 	};
 
 	return (
@@ -72,7 +96,10 @@ const Store = () => {
 			<section className="middle-divisor"></section>
 
 			<section className="right-side-panel">
-				<MainTable />
+				<MainTable
+					onDelete={handleOnDelete}
+					productsList={cartProductsList}
+				/>
 			</section>
 		</>
 	);

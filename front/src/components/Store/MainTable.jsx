@@ -1,17 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
-
 import ValuesTable from "./ValuesTable/ValuesTable";
 
-import {
-	PATCH_OPERATIONS,
-	SUITE_STORE_TABLE_HEADERS,
-} from "../../utils/constants";
-
-import {
-	removeProduct,
-	selectAllProductsFromCart,
-} from "../../features/cart/cartSlice";
-import { patchProductAmount } from "../../features/products/productsSlice";
+import { SUITE_STORE_TABLE_HEADERS } from "../../utils/constants";
 
 const Header = () => (
 	<thead>
@@ -23,24 +12,7 @@ const Header = () => (
 	</thead>
 );
 
-const Body = ({ productsList }) => {
-	const dispatch = useDispatch();
-	const cartProductsList = useSelector(selectAllProductsFromCart);
-
-	const handleOnDelete = (objectIndex) => {
-		if (cartProductsList.length) window.location.reload();
-
-		dispatch(removeProduct(objectIndex));
-		const lastRemovedProduct = cartProductsList.at(objectIndex);
-
-		dispatch(
-			patchProductAmount({
-				...lastRemovedProduct,
-				operation: PATCH_OPERATIONS.ADD,
-			})
-		);
-	};
-
+const Body = ({ onDelete, productsList }) => {
 	const productsTRs = productsList.map((product, index) => (
 		<tr key={index}>
 			<td>{product.name}</td>
@@ -50,7 +22,7 @@ const Body = ({ productsList }) => {
 			<td>
 				<button
 					className="bi bi-trash-fill delete-btn"
-					onClick={() => handleOnDelete(index)}
+					onClick={() => onDelete(index)}
 				/>
 			</td>
 		</tr>
@@ -59,14 +31,12 @@ const Body = ({ productsList }) => {
 	return <tbody>{productsTRs}</tbody>;
 };
 
-const Table = () => {
-	const productsList = useSelector(selectAllProductsFromCart);
-
+const Table = ({ onDelete, productsList }) => {
 	return (
 		<>
 			<table>
 				<Header />
-				<Body productsList={productsList} />
+				<Body onDelete={onDelete} productsList={productsList} />
 			</table>
 			<ValuesTable productsList={productsList} />
 		</>
