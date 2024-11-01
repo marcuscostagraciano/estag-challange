@@ -82,6 +82,7 @@ button {
 }
 
 .left-side-panel {
+    overflow-x: hidden;
     grid-column: 1;
 
     select,
@@ -103,7 +104,7 @@ button {
     }
 
     input:disabled,
-    input:not([type=submit]):read-only {
+    input:not([type="submit"]):read-only {
         cursor: not-allowed;
         outline: none;
     }

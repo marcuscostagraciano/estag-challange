@@ -1,10 +1,21 @@
-section.site-body {
-    justify-self: center;
-    width: 80%;
+:root {
+    --MAX-HEIGHT-LEFT-SIDE: 75vh;
+    --LEFT-SIDE-MEDIA-QUERY-HEIGHT: 33vh;
+}
+
+.left-side-panel {
+    overflow-y: auto;
+    max-height: var(--MAX-HEIGHT-LEFT-SIDE);
+
+    @media (width <=1024px) {
+        height: var(--LEFT-SIDE-MEDIA-QUERY-HEIGHT);
+    }
 }
 
 #history-table {
     border-collapse: collapse;
+    width: 80%;
+    margin: auto;
 
     thead {
         th {
@@ -23,9 +34,20 @@ section.site-body {
             &:hover {
                 background-color: var(--TERTIARY-COLOR);
             }
+
+            &:not(:last-of-type) {
+                border-bottom: 0.1rem dotted var(--SECONDARY-COLOR);
+            }
         }
 
         td {
+            text-align: center;
+            padding: 1rem;
+
+            &:first-of-type {
+                width: 5ch;
+            }
+
             &:not(:last-of-type) {
                 border-right: dotted var(--SECONDARY-COLOR);
             }

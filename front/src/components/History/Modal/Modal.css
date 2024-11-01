@@ -1,0 +1,30 @@
+#history-info {
+    margin: 0 20px;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+
+    button {
+        justify-self: center;
+        grid-column: 1 / -1;
+        width: 20%;
+        margin-top: 2vh;
+
+        &:hover {
+            background-color: var(--PRIMARY-COLOR);
+            color: var(--TERTIARY-COLOR);
+        }
+    }
+}
+
+#left-panel {
+    grid-column: 1;
+}
+
+#right-panel {
+    grid-column: 2;
+}
+
+#products-list {
+    overflow-y: auto;
+    max-height: var(--LEFT-SIDE-MEDIA-QUERY-HEIGHT);
+}
