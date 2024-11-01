@@ -42,8 +42,8 @@ const INITIAL_STATE = {
 };
 
 const PATCH_OPERATIONS = {
-    ADD: 'ADD',
-    SUB: 'SUB',
+    ADD: "ADD",
+    SUB: "SUB",
 };
 
 export {

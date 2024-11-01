@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux";
 
+import "./Modal.css";
+
 import { selectAllOrderItem } from "../../../features/orderItem/orderItemSlice";
 
 const Modal = ({ order, setIsModalVisible }) => {
@@ -21,17 +23,24 @@ const Modal = ({ order, setIsModalVisible }) => {
 	});
 
 	return (
-		<section>
-			// order code
-			{order.code}
-			// order tax
-			{order.tax}
-			// order total
-			{order.total}
-			// sum orderItems amounts
-			{totalOrderAmount}
-			// items list
-			{renderOrderItems}
+		<section id="history-info">
+			<section id="left-panel">
+				<h1>Order code:</h1>
+				{order.code}
+
+				<h1>Order tax ($)</h1>
+				{order.tax}
+				<h1>Order total ($)</h1>
+
+				{order.total}
+				<h1>Qty of products</h1>
+
+				{totalOrderAmount}
+			</section>
+			<section id="right-panel">
+				<h1>Products</h1>
+				<section id="products-list">{renderOrderItems}</section>
+			</section>
 			<button onClick={() => setIsModalVisible(false)}>Hide info</button>
 		</section>
 	);

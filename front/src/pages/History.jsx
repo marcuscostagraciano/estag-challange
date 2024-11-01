@@ -15,24 +15,27 @@ const History = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [orderCode, setOrderCode] = useState();
 
-	const renderModal = isModalVisible && (
+	const renderModal = isModalVisible ? (
 		<Modal
 			order={orders.find((order) => order.code === orderCode)}
 			setIsModalVisible={setIsModalVisible}
 		/>
+	) : (
+		"Select a order to see it's details"
 	);
 
 	return (
 		<>
 			<Loader loadingStatus={orderItemStatus} />
-			<section className="site-body">
+			<section className="left-side-panel">
 				<Table
 					ordersList={orders}
 					setOrderCode={setOrderCode}
 					setIsModalVisible={setIsModalVisible}
 				/>
-				{renderModal}
 			</section>
+			<div className="middle-divisor" />
+			<section className="right-side-panel">{renderModal}</section>
 		</>
 	);
 };
