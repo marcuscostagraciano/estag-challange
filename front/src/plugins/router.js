@@ -6,7 +6,7 @@ import Store from "../pages/Store";
 import Product from "../pages/Product";
 import Category from "../pages/Category";
 import History from "../pages/History";
-import NotFound from "../pages/NotFound";
+import NotFound from "../pages/NotFound/NotFound";
 
 const router = createBrowserRouter([
 	{

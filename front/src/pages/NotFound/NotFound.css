@@ -1,0 +1,17 @@
+article {
+    grid-column: 1/-1;
+    margin: 10vh auto;
+    font-size: 1.5rem;
+}
+
+#not-found-message {
+    font-weight: normal;
+    display: inline-block;
+}
+
+#return-link {
+    display: flex;
+    margin-top: 2vh;
+    justify-content: center;
+    border: solid var(--PRIMARY-COLOR);
+}
