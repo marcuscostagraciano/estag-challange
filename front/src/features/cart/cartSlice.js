@@ -5,7 +5,7 @@ const initialState = {
     products: [],
     tax: 0,
     total: 0,
-    lastRemovedProduct: {}
+    lastRemovedProduct: {},
 };
 
 const cartSlice = createSlice({
@@ -14,17 +14,21 @@ const cartSlice = createSlice({
 
     reducers: {
         addProduct (state, payload) {
-            const product = payload.payload.product;
+            const product = payload.payload;
 
-            const taxPayed = (product.total * payload.payload.tax) / 100;
+            const taxPayed = (product.total * product.category.tax) / 100;
             state.tax += taxPayed;
             state.total += product.total + taxPayed;
             state.products.push({ ...product, taxPayed });
         },
         removeProduct (state, payload) {
             const positionToBeRemoved = payload.payload;
-            const lastRemovedProduct = state.products.splice(positionToBeRemoved, 1)[0];
-            const totalPayed = lastRemovedProduct.total + lastRemovedProduct.taxPayed;
+            const lastRemovedProduct = state.products.splice(
+                positionToBeRemoved,
+                1
+            )[0];
+            const totalPayed =
+                lastRemovedProduct.total + lastRemovedProduct.taxPayed;
 
             state.lastRemovedProduct = lastRemovedProduct;
             state.tax -= lastRemovedProduct.taxPayed;

@@ -1,68 +1,13 @@
-import { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
 import "./Form.css";
 
-import { getListObject } from "../../../utils";
-
-import {
-	patchProductAmount,
-	selectAllProducts,
-} from "../../../features/products/productsSlice";
-import { addProduct as addProductToCart } from "../../../features/cart/cartSlice";
-import { PATCH_OPERATIONS } from "../../../utils/constants";
-
-const Form = () => {
-	const dispatch = useDispatch();
-	const productsList = useSelector(selectAllProducts);
-
-	const selectedProductAmount = useRef();
-	const [selectedProduct, setSelectedProduct] = useState();
-	const [selectedProductCode, setSelectedProductCode] = useState(false);
-	const [selectedProductMaxAmount, setSelectedProductMaxAmount] = useState();
-	const [selectedProductPrice, setSelectedProductPrice] = useState();
-	const [selectedProductTax, setSelectedProductTax] = useState();
-
-	const handleOnChange = (e) => {
-		const productCode = e.target.value;
-		setSelectedProductCode(productCode);
-
-		const product = getListObject(productsList, productCode);
-
-		setSelectedProduct(product);
-		setSelectedProductPrice(product.price);
-
-		setSelectedProductMaxAmount(product.amount);
-		setSelectedProductTax(product.category.tax);
-	};
-
-	const handleOnSubmit = (e) => {
-		e.preventDefault();
-		const amount = Number(selectedProductAmount.current.value);
-		const newAmount = selectedProductMaxAmount - amount;
-		const productToDispatch = {
-			...selectedProduct,
-			amount,
-			total: amount * selectedProduct.price,
-		};
-
-		dispatch(
-			addProductToCart({
-				product: productToDispatch,
-				tax: selectedProductTax,
-			})
-		);
-		dispatch(
-			patchProductAmount({
-				...productToDispatch,
-				operation: PATCH_OPERATIONS.SUB,
-			})
-		);
-		setSelectedProductMaxAmount(newAmount);
-
-		selectedProductAmount.current.value = "";
-	};
-
+const Form = ({
+	productsList,
+	selectedProduct,
+	selectedProductMaxAmount,
+	productAmountRef,
+	onChange,
+	onSubmit,
+}) => {
 	const renderProductsList = productsList.map((product) => {
 		if (product.amount)
 			return (
@@ -79,13 +24,13 @@ const Form = () => {
 
 	return (
 		<>
-			<form id="input-form" onSubmit={handleOnSubmit}>
+			<form id="input-form" onSubmit={onSubmit}>
 				<label htmlFor="product-selection">Product</label>
 				<select
 					name="product-selection"
 					id="product-selection"
 					title="Product selection"
-					onChange={handleOnChange}
+					onChange={onChange}
 					defaultValue={"default"}
 				>
 					<option value="default" disabled>
@@ -99,16 +44,16 @@ const Form = () => {
 						name="amount-input"
 						id="amount-input"
 						title={
-							selectedProductCode
-								? `Amount to be bought`
+							selectedProduct
+								? `Amount to be bought. Max: ${selectedProductMaxAmount}`
 								: "Select a product to input the amount"
 						}
 						placeholder="Amount"
 						min={1}
 						max={selectedProductMaxAmount}
-						ref={selectedProductAmount}
+						ref={productAmountRef}
 						required
-						disabled={!selectedProductCode}
+						disabled={!selectedProduct?.code}
 					/>
 					<input
 						type="number"
@@ -116,7 +61,7 @@ const Form = () => {
 						id="tax-input"
 						title="Product's category tax"
 						placeholder="Product's category tax"
-						value={selectedProductTax}
+						value={selectedProduct?.category.tax}
 						readOnly
 					/>
 					<input
@@ -125,7 +70,7 @@ const Form = () => {
 						id="unitary-price-input"
 						title="Product's unitary price"
 						placeholder="Product's unitary price"
-						value={selectedProductPrice}
+						value={selectedProduct?.price}
 						readOnly
 					/>
 				</section>
@@ -139,7 +84,7 @@ const Form = () => {
 							? "Register a Product to enable this button"
 							: ""
 					}
-					disabled={!selectedProductCode}
+					disabled={!selectedProduct?.code}
 				/>
 			</form>
 		</>
