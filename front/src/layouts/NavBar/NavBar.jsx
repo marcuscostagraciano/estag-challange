@@ -57,6 +57,10 @@ function NavBar() {
 		productsStatus,
 		orderItemStatus,
 		ordersStatus,
+		categoriesError,
+		productsError,
+		orderItemError,
+		ordersError,
 		dispatch,
 	]);
 

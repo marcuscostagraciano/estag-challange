@@ -1,18 +1,13 @@
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-	CATEGORY_FIELDS,
-	CATEGORY_TABLE_HEADERS,
-	THUNK_STATUS,
-} from "../utils/constants";
+import { CATEGORY_FIELDS, CATEGORY_TABLE_HEADERS } from "../utils/constants";
 
 import ItemsTable from "../components/Table";
 import CategoriesForm from "../components/Categories/Form";
 
 import {
 	selectAllCategories,
-	getCategoriesError,
 	getCategoriesStatus,
 	asyncDeleteCategory,
 	asyncPostCategory,
@@ -27,7 +22,6 @@ function Category() {
 	const dispatch = useDispatch();
 	const categories = useSelector(selectAllCategories);
 	const categoriesStatus = useSelector(getCategoriesStatus);
-	const categoriesError = useSelector(getCategoriesError);
 
 	const handleOnSubmit = (e) => {
 		e.preventDefault();
