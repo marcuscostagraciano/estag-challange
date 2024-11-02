@@ -11,7 +11,14 @@ article {
 
 #return-link {
     display: flex;
-    margin-top: 2vh;
-    justify-content: center;
-    border: solid var(--PRIMARY-COLOR);
+    margin: 2vh auto;
+    width: fit-content;
+    text-decoration: underline;
+
+    &:hover {
+        background-color: var(--PRIMARY-COLOR);
+        border-radius: 5%;
+
+        transition: 0.5s;
+    }
 }
