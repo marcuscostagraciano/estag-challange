@@ -5,10 +5,10 @@ class Products {
         );
     }
 
-    static async postProduct (name, amount, price, category_code) {
+    static async postProduct (name, amount, price, category_code, img_url) {
         const response = await fetch("http://localhost/products", {
             method: "POST",
-            body: JSON.stringify({ name, price, category_code, amount }),
+            body: JSON.stringify({ name, price, category_code, amount, img_url }),
         }).then((e) => e.json());
 
         return response;

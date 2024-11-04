@@ -5,6 +5,7 @@ const Form = ({
 	nameRef,
 	amountRef,
 	priceRef,
+	imgUrlRef,
 	categoryRef,
 	categoriesList,
 }) => {
@@ -53,6 +54,15 @@ const Form = ({
 						title="Unitary price"
 						inputMode="numeric"
 						ref={priceRef}
+					/>
+					<input
+						type="url"
+						id="img_url"
+						placeholder="Product image URL"
+						required
+						title="Product image"
+						inputMode="url"
+						ref={imgUrlRef}
 					/>
 					<select
 						id="category-selection"

@@ -142,6 +142,7 @@ const asyncPostProduct = createAsyncThunk(
         const price = productData.price;
         const category_code = productData.categoryCode;
         const category = productData.category;
+        const imgUrl = productData.imgUrl;
 
         const isProductNameUsed = !!productsInState.find(
             (product) => product.name === name
@@ -149,14 +150,19 @@ const asyncPostProduct = createAsyncThunk(
         const isAmountValid = !!Number(amount) && 0 < amount;
         const isPriceValid = !!Number(price) && 0 < price;
 
+        console.log(productData);
+
+
         if (!isProductNameUsed && isAmountValid && isPriceValid) {
             try {
                 const data = await Products.postProduct(
                     name,
                     amount,
                     price,
-                    category_code
+                    category_code,
+                    imgUrl
                 );
+                // const data = productData;
                 return { ...data, category };
             } catch (error) {
                 console.error(error);

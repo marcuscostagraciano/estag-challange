@@ -21,6 +21,7 @@ function Product() {
 	const nameRef = useRef();
 	const priceRef = useRef();
 	const categoryRef = useRef();
+	const imgUrlRef = useRef();
 
 	const dispatch = useDispatch();
 	// Categories
@@ -37,8 +38,16 @@ function Product() {
 		const price = priceRef.current.value;
 		const categoryCode = categoryRef.current.value;
 		const category = getListObject(categoriesList, categoryCode);
+		const imgUrl = imgUrlRef.current.value;
 		dispatch(
-			asyncPostProduct({ name, amount, price, categoryCode, category })
+			asyncPostProduct({
+				name,
+				amount,
+				price,
+				categoryCode,
+				category,
+				imgUrl,
+			})
 		);
 
 		nameRef.current.value = null;
@@ -60,6 +69,7 @@ function Product() {
 					nameRef={nameRef}
 					priceRef={priceRef}
 					categoryRef={categoryRef}
+					imgUrlRef={imgUrlRef}
 					categoriesList={categoriesList}
 					onSubmit={handleOnSubmit}
 				/>

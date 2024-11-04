@@ -11,9 +11,9 @@ class Products
             self::$conn = DatabaseConnection::getConnection();
     }
 
-    private static function createProduct(string $name, int $amount, float $unit_price, int $category_code): array
+    private static function createProduct(string $name, int $amount, float $unit_price, int $category_code, string $img_url): array
     {
-        $sql = 'INSERT INTO products (name, amount, price, category_code) VALUES (:name, :amount, :price, :category_code)';
+        $sql = 'INSERT INTO products (name, amount, price, category_code, img_url) VALUES (:name, :amount, :price, :category_code, :img_url)';
         try {
 
             self::$conn->beginTransaction();
@@ -23,6 +23,7 @@ class Products
             $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
             $stmt->bindParam(':price', $unit_price, PDO::PARAM_STR);
             $stmt->bindParam(':category_code', $category_code, PDO::PARAM_INT);
+            $stmt->bindParam(':img_url', $img_url, PDO::PARAM_STR);
             $stmt->execute();
 
             $last_code = self::$conn->lastInsertId();
@@ -34,6 +35,7 @@ class Products
                 'amount' => $amount,
                 'price' => $unit_price,
                 'category_code' => $category_code,
+                'img_url' => $img_url,
             ];
             return ResponseHandler::handleResponse(201, responseArray: $insert_data);
         } catch (PDOException $e) {
@@ -46,7 +48,7 @@ class Products
         try {
             $stmt = self::$conn->query('
             SELECT
-                p.code, p.amount, p.name, p.price,
+                p.code, p.amount, p.name, p.price, p.img_url,
                 json_agg(
                     json_build_object(
                         \'code\', c.code,
@@ -82,7 +84,7 @@ class Products
     {
         $sql = '
         SELECT
-            p.code, p.amount, p.name, p.price,
+            p.code, p.amount, p.name, p.price, p.img_url,
             json_agg(
                 json_build_object(
                     \'code\', c.code,
@@ -206,6 +208,7 @@ class Products
         $amount = $request_info['BODY']['amount'] ?? null;
         $unit_price = $request_info['BODY']['price'] ?? null;
         $category = $request_info['BODY']['category_code'] ?? null;
+        $img_url = $request_info['BODY']['img_url'] ?? null;
 
         switch ($method) {
             case 'GET':
@@ -216,8 +219,8 @@ class Products
                 break;
 
             case 'POST':
-                if (!(is_null($productName) && is_null($amount) && is_null($unit_price) && is_null($category))) {
-                    return self::createProduct($productName, $amount, $unit_price, $category);
+                if (!(is_null($productName) && is_null($amount) && is_null($unit_price) && is_null($category) && is_null($img_url))) {
+                    return self::createProduct($productName, $amount, $unit_price, $category, $img_url);
                 }
                 return ResponseHandler::handleResponse(400, responseMessage: 'Bad request');
 
