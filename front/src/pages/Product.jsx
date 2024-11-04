@@ -53,6 +53,7 @@ function Product() {
 		nameRef.current.value = null;
 		amountRef.current.value = null;
 		priceRef.current.value = null;
+		imgUrlRef.current.value = null;
 	};
 
 	const handleOnDelete = (productId) => {
