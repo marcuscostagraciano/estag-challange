@@ -10,6 +10,7 @@ const BASE_TABLE_HEADER_W_PRODUCTS = ["Product", "Amount", "Price ($)"];
 const CATEGORY_TABLE_HEADERS = tableHeaderFactory(["Category", "Tax (%)"]);
 const PRODUCT_TABLE_HEADERS = tableHeaderFactory([
     ...BASE_TABLE_HEADER_W_PRODUCTS,
+    "Image",
     "Category",
 ]);
 const SUITE_STORE_TABLE_HEADERS = [

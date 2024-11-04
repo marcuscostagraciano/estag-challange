@@ -10,6 +10,15 @@ const Body = ({ items, fetchStatus, onDelete }) => {
 				<td>{item.name}</td>
 				<td>{item.amount}</td>
 				<td>{item.price}</td>
+				<td>
+					<a
+						href={item.img_url}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Open image
+					</a>
+				</td>
 				<td>{item.category.name}</td>
 				<td>
 					<button
