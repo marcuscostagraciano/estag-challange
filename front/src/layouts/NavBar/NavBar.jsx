@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, NavLink } from "react-router-dom";
 import { useEffect } from "react";
 
+import routes from "../../plugins/router/routes";
 import "./NavBar.css";
 
 import { THUNK_STATUS } from "../../utils/constants";
@@ -64,14 +65,16 @@ function NavBar() {
 		dispatch,
 	]);
 
+	const userVisibleRoutes = routes.filter((route) => route.isUserVisible);
+	const renderNavLinks = userVisibleRoutes.map((route) => (
+		<NavLink to={route.path} key={route.name}>
+			{route.name}
+		</NavLink>
+	));
+
 	return (
 		<>
-			<nav className="primary-bg page-header">
-				<NavLink to="/">Suite Store</NavLink>
-				<NavLink to="products">Products</NavLink>
-				<NavLink to="categories">Categories</NavLink>
-				<NavLink to="history">History</NavLink>
-			</nav>
+			<nav className="primary-bg page-header">{renderNavLinks}</nav>
 
 			<main className="site-body">
 				<Outlet />
