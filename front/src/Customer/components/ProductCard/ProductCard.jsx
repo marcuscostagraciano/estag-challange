@@ -14,7 +14,7 @@ const ProductCard = ({ product }) => {
 			<section className="product-info">
 				<span
 					className={
-						"offside-regular" +
+						"product-name offside-regular" +
 						(product.name.length > 20 ? " marquee" : "")
 					}
 				>
