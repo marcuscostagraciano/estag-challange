@@ -1,0 +1,53 @@
+/* Nova Mono */
+@import url('https://fonts.googleapis.com/css2?family=Nova+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Offside&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    font-size: 62.5%;
+    color-scheme: light dark;
+
+    --PRIMARY-COLOR: #231942;
+    --SECONDARY-COLOR: #5E548E;
+    --TERTIARY-COLOR: #9F86C0;
+    --QUATERNARY-COLOR: #BE95C4;
+    --QUINARY-COLOR: #E0B1CB;
+
+    font-family: "Nova Mono", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+main {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+}
+
+.sidebar {
+    grid-column: 2 / 4;
+}
+
+.products-list {
+    grid-column: 4 / -2;
+
+    display: flex;
+    flex-wrap: wrap;
+    background-color: light-dark(var(--SECONDARY-COLOR), var(--TERTIARY-COLOR));
+}
+
+.offside-regular {
+    font-family: "Offside", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.nova-mono-regular {
+    font-family: "Nova Mono", serif;
+    font-weight: 400;
+    font-style: normal;
+}
