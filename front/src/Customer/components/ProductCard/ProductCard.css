@@ -7,8 +7,7 @@
     background-color: light-dark(var(--TERTIARY-COLOR), var(--SECONDARY-COLOR));
     display: flex;
     flex-direction: column;
-    transition: background-color calc(var(--TRANSITION-DURATION) * 2),
-        opacity calc(var(--TRANSITION-DURATION) * 2);
+    transition: calc(var(--TRANSITION-DURATION) * 2);
 
     img {
         height: 200px;
@@ -31,8 +30,11 @@
 .product-card:has(~ .product-card:hover),
 .product-card:hover~.product-card {
     opacity: 0.5;
-    transition: background-color calc(var(--TRANSITION-DURATION) * 2),
-        opacity calc(var(--TRANSITION-DURATION) * 2);
+    transition: var(--TRANSITION-DURATION);
+
+    img {
+        filter: blur(1px);
+    }
 }
 
 .product-info {
