@@ -1,5 +1,7 @@
 :root {
+    --MARQUEE-DURATION: 4s;
     --TRANSITION-DURATION: 0.5s;
+    --IMAGE-SIZE: 200px;
 }
 
 .product-card {
@@ -8,10 +10,11 @@
     display: flex;
     flex-direction: column;
     transition: calc(var(--TRANSITION-DURATION) * 2);
+    margin: 1rem;
 
     img {
-        height: 200px;
-        width: 200px;
+        height: var(--IMAGE-SIZE);
+        width: var(--IMAGE-SIZE);
         object-fit: cover;
         /* background-color: light-dark(); */
     }
@@ -25,6 +28,10 @@
 
 .product-card:hover {
     cursor: pointer;
+
+    .marquee {
+        animation: marquee var(--MARQUEE-DURATION) linear forwards infinite;
+    }
 }
 
 .product-card:has(~ .product-card:hover),
@@ -38,15 +45,25 @@
 }
 
 .product-info {
+    max-width: var(--IMAGE-SIZE);
     background-color: light-dark(var(--QUATERNARY-COLOR), var(--PRIMARY-COLOR));
     width: 100%;
     height: 100%;
-
-    text-overflow: ellipsis;
-    overflow: hidden;
     white-space: nowrap;
+    overflow: hidden;
+    padding: 0 2rem;
 
     p {
         justify-self: right;
+    }
+}
+
+.marquee {
+    display: inline-block;
+}
+
+@keyframes marquee {
+    100% {
+        transform: translate(-110%, 0);
     }
 }
