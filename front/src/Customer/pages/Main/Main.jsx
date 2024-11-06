@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { THUNK_STATUS } from "../../../utils/constants";
@@ -15,8 +15,6 @@ import {
 	getCategoriesStatus,
 	selectAllCategories,
 } from "../../../features/categories/categoriesSlice";
-import { getOrderItemStatus } from "../../../features/orderItem/orderItemSlice";
-import { getOrdersStatus } from "../../../features/orders/ordersSlice";
 
 import ProductCard from "../../components/ProductCard/ProductCard";
 
@@ -27,37 +25,56 @@ const Main = () => {
 	const categoriesList = useSelector(selectAllCategories);
 	const categoriesStatus = useSelector(getCategoriesStatus);
 	const productsStatus = useSelector(getProductsStatus);
-	const orderItemStatus = useSelector(getOrderItemStatus);
-	const ordersStatus = useSelector(getOrdersStatus);
+
+	const [filteredProductList, setFilteredProductList] = useState([]);
+	const categoryFilterRef = useRef();
 
 	useEffect(() => {
 		if (categoriesStatus === THUNK_STATUS.IDLE)
 			dispatch(asyncFetchCategories());
 		if (productsStatus === THUNK_STATUS.IDLE)
 			dispatch(asyncFetchProducts());
-	}, [
-		categoriesStatus,
-		productsStatus,
-		orderItemStatus,
-		ordersStatus,
-		dispatch,
-	]);
+		if (productsList) setFilteredProductList(productsList);
+	}, [categoriesStatus, productsStatus, productsList, dispatch]);
 
-	const renderProductList = productsList.map((product, index) => (
+	const renderProductList = filteredProductList.map((product, index) => (
 		<ProductCard product={product} key={index} />
 	));
+
+	const handleOnChange = () => {
+		const selectedCategoryCode = categoryFilterRef.current.value;
+		const isCategoryCodeNumber = !!Number(selectedCategoryCode)
+		
+		const filteredList = productsList.filter(
+			(product) => product.category.code == selectedCategoryCode
+		);
+		setFilteredProductList(isCategoryCodeNumber ? filteredList : productsList);
+	};
+
+	const handleReset = () => {
+		categoryFilterRef.current.value = "default";
+		setFilteredProductList(productsList);
+	};
 
 	return (
 		<>
 			<main>
 				<aside className="sidebar">
 					<h1>Filtros</h1>
-					{categoriesList.map((cat) => (
-						<label>
-							<input type="checkbox" />
-							{cat.name}
-						</label>
-					))}
+					<select
+						defaultValue="default"
+						onChange={handleOnChange}
+						ref={categoryFilterRef}
+					>
+						<option value="default">All</option>
+						{categoriesList.map((cat) => (
+							<option value={cat.code} key={cat.code}>
+								{cat.name}
+							</option>
+						))}
+					</select>
+					<br />
+					<button onClick={handleReset}>Reset</button>
 				</aside>
 
 				<section className="products-list">{renderProductList}</section>
