@@ -48,7 +48,7 @@ class Products
         try {
             $stmt = self::$conn->query('
             SELECT
-                p.code, p.amount, p.name, p.price, p.img_url,
+                p.code, p.amount, p.artist, p.name, p.price, p.img_url,
                 json_agg(
                     json_build_object(
                         \'code\', c.code,
@@ -84,7 +84,7 @@ class Products
     {
         $sql = '
         SELECT
-            p.code, p.amount, p.name, p.price, p.img_url,
+            p.code, p.amount, p.artist, p.name, p.price, p.img_url,
             json_agg(
                 json_build_object(
                     \'code\', c.code,
