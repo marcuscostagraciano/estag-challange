@@ -1,67 +1,70 @@
 :root {
-    --MARQUEE-DURATION: 4s;
-    --TRANSITION-DURATION: 0.5s;
-    --IMAGE-SIZE: 200px;
+	--MARQUEE-DURATION: 4s;
+	--TRANSITION-DURATION: 0.5s;
+	--IMAGE-SIZE: 200px;
+	--LATERAL-PADDING-SIZE: 2rem;
 }
 
 .product-card {
-    border: solid var(--QUATERNARY-COLOR);
-    background-color: light-dark(var(--TERTIARY-COLOR), var(--SECONDARY-COLOR));
-    display: flex;
-    flex-direction: column;
-    transition: calc(var(--TRANSITION-DURATION) * 2);
-    margin: 1rem;
+	border: solid var(--QUATERNARY-COLOR);
+	background-color: light-dark(var(--TERTIARY-COLOR), var(--SECONDARY-COLOR));
+	display: flex;
+	flex-direction: column;
+	transition: calc(var(--TRANSITION-DURATION) * 2);
+	margin: 1rem;
 
-    img {
-        height: var(--IMAGE-SIZE);
-        width: var(--IMAGE-SIZE);
-        object-fit: cover;
-        /* background-color: light-dark(); */
-    }
+	img {
+		height: var(--IMAGE-SIZE);
+		width: var(--IMAGE-SIZE);
+		object-fit: cover;
+		/* background-color: light-dark(); */
+	}
 }
 
 .product-card:hover {
-    cursor: pointer;
+	cursor: pointer;
 
-    .marquee {
-        animation: marquee var(--MARQUEE-DURATION) linear forwards infinite;
-    }
+	.marquee {
+		animation: marquee var(--MARQUEE-DURATION) linear forwards infinite;
+	}
 }
 
 .product-card:has(~ .product-card:hover),
-.product-card:hover~.product-card {
-    opacity: 0.5;
-    transition: var(--TRANSITION-DURATION);
+.product-card:hover ~ .product-card {
+	opacity: 0.5;
+	transition: var(--TRANSITION-DURATION);
 
-    img {
-        filter: blur(1px);
-    }
+	img {
+		filter: blur(1px);
+	}
 }
 
 .product-info {
-    max-width: var(--IMAGE-SIZE);
-    background-color: light-dark(var(--QUATERNARY-COLOR), var(--PRIMARY-COLOR));
-    width: 100%;
-    height: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    padding: 0.25rem 2rem;
+	max-width: var(--IMAGE-SIZE);
+	background-color: light-dark(var(--QUATERNARY-COLOR), var(--PRIMARY-COLOR));
+	width: 100%;
+	height: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	padding: 0.25rem var(--LATERAL-PADDING-SIZE);
 
-    p {
-        justify-self: right;
-    }
+	p {
+		justify-self: right;
+	}
 }
 
 .product-name {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .marquee {
-    display: inline-block;
+	display: inline-block;
 }
 
 @keyframes marquee {
-    100% {
-        transform: translate(-110%, 0);
-    }
+	100% {
+		transform: translateX(
+			calc(calc(100% + var(--LATERAL-PADDING-SIZE)) * -1)
+		);
+	}
 }
