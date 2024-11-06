@@ -1,54 +1,58 @@
 /* Nova Mono */
-@import url('https://fonts.googleapis.com/css2?family=Nova+Mono&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Offside&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nova+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Offside&display=swap");
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 :root {
-    font-size: 62.5%;
-    color-scheme: light dark;
+	font-size: 62.5%;
+	color-scheme: light dark;
 
-    --PRIMARY-COLOR: #231942;
-    --SECONDARY-COLOR: #5E548E;
-    --TERTIARY-COLOR: #9F86C0;
-    --QUATERNARY-COLOR: #BE95C4;
-    --QUINARY-COLOR: #E0B1CB;
+	--PRIMARY-COLOR: #231942;
+	--SECONDARY-COLOR: #5e548e;
+	--TERTIARY-COLOR: #9f86c0;
+	--QUATERNARY-COLOR: #be95c4;
+	--QUINARY-COLOR: #e0b1cb;
 
-    font-family: "Nova Mono", serif;
-    font-weight: 400;
-    font-style: normal;
+	font-family: "Nova Mono", serif;
+	font-weight: 400;
+	font-style: normal;
 }
 
 main {
-    display: grid;
-    grid-template-columns: repeat(15, 1fr);
+	display: grid;
+	grid-template-columns: repeat(15, 1fr);
 }
 
 .sidebar {
-    grid-column: 2 / 4;
+	grid-column: 2 / 4;
 }
 
 .products-list {
-    grid-column: 4 / -2;
+	grid-column: 4 / -2;
 
-    display: flex;
-    column-gap: 5rem;
-    flex-wrap: wrap;
-    background-color: light-dark(var(--SECONDARY-COLOR), var(--TERTIARY-COLOR));
+	display: flex;
+	column-gap: 5rem;
+	flex-wrap: wrap;
+	background-color: light-dark(var(--SECONDARY-COLOR), var(--TERTIARY-COLOR));
+}
+
+button {
+	font-family: inherit;
 }
 
 .offside-regular {
-    font-family: "Offside", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+	font-family: "Offside", sans-serif;
+	font-weight: 400;
+	font-style: normal;
 }
 
 .nova-mono-regular {
-    font-family: "Nova Mono", serif;
-    font-weight: 400;
-    font-style: normal;
+	font-family: "Nova Mono", serif;
+	font-weight: 400;
+	font-style: normal;
 }

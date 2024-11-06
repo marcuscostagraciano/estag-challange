@@ -1,4 +1,6 @@
 import "./ProductCard.css";
+const NAME_MARQUEE_LENGTH = 20;
+const ARTIST_MARQUEE_LENGTH = 22;
 
 const ProductCard = ({ product }) => {
 	return (
@@ -10,17 +12,26 @@ const ProductCard = ({ product }) => {
 			<img
 				src={product.img_url}
 				alt={'Image of "' + product.name + '" album'}
+				className="product-image"
 			/>
 			<section className="product-info">
 				<span
 					className={
 						"product-name offside-regular" +
-						(product.name.length > 20 ? " marquee" : "")
+						(NAME_MARQUEE_LENGTH < product.name.length ? " marquee" : "")
 					}
 				>
 					{product.name}
 				</span>
-				<p>$ {product.price}</p>
+				<span
+					className={
+						"product-artist" +
+						(ARTIST_MARQUEE_LENGTH < product.artist.length ? " marquee" : "")
+					}
+				>
+					{product.artist}
+				</span>
+				<span className="product-price">$ {product.price}</span>
 			</section>
 		</article>
 	);
