@@ -28,10 +28,6 @@ main {
 	grid-template-columns: repeat(15, 1fr);
 }
 
-.sidebar {
-	grid-column: 2 / 4;
-}
-
 .products-list {
 	grid-column: 4 / -2;
 
