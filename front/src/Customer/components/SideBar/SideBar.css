@@ -4,3 +4,16 @@
     flex-direction: column;
     margin: 0 2rem;
 }
+
+.price-inputs {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    label {
+        padding-top: 1rem;
+    }
+    input {
+        width: 5em;
+    }
+}
