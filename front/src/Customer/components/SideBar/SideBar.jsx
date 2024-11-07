@@ -2,7 +2,7 @@ import { useRef } from "react";
 import "./SideBar.css";
 
 const SideBar = ({
-	artists,
+	initialsAndArtists,
 	categoriesList,
 	setFilteredProductList,
 	productsList,
@@ -10,6 +10,7 @@ const SideBar = ({
 	const DEFAULT_SELECT = "default";
 	const categoryFilterRef = useRef();
 	const artistRef = useRef();
+	console.log({ initialsAndArtists });
 
 	const handleOnChange = () => {
 		const selectedCategoryCode = categoryFilterRef.current.value;
@@ -33,6 +34,16 @@ const SideBar = ({
 		categoryFilterRef.current.value = DEFAULT_SELECT;
 		setFilteredProductList(productsList);
 	};
+
+	const renderArtistsSelect = initialsAndArtists.map((object) => (
+		<optgroup key={object.initial} label={object.initial}>
+			{object.artists.map((artist) => (
+				<option value={artist} key={artist}>
+					{artist}
+				</option>
+			))}
+		</optgroup>
+	));
 
 	return (
 		<aside className="sidebar">
@@ -61,11 +72,18 @@ const SideBar = ({
 				name="artist-selection"
 			>
 				<option value={DEFAULT_SELECT}>All</option>
-				{artists.map((artist, index) => (
+				{renderArtistsSelect}
+				{/* {artists.map((artist, index) => (
 					<option value={artist} key={index}>
 						{artist}
 					</option>
 				))}
+				{artists.map((artist) => (
+					<optgroup key={artist} label={artist}>
+						<option value={DEFAULT_SELECT}>All</option>
+					</optgroup>
+				))} */}
+				{/* {artists} */}
 			</select>
 			<button onClick={handleReset}>Reset</button>
 		</aside>

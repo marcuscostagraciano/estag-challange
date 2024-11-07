@@ -45,10 +45,20 @@ const Main = () => {
 		}
 		if (productsList) {
 			setFilteredProductList(productsList);
-			const artistsSet = new Set(
-				productsList.map((product) => product.artist)
-			);
-			setArtists([...artistsSet].sort());
+			const sortedArtistsList = [
+				...new Set(productsList.map((product) => product.artist)),
+			].sort();
+			const artistsInitials = [
+				...new Set(sortedArtistsList.map((artist) => artist[0])),
+			];
+			const initialsAndArtists = artistsInitials.map((initial) => ({
+				initial,
+				artists: sortedArtistsList.filter((artist) =>
+					artist.startsWith(initial)
+				),
+			}));
+
+			setArtists(initialsAndArtists);
 		}
 	}, [
 		categoriesStatus,
@@ -66,8 +76,8 @@ const Main = () => {
 		<>
 			<main>
 				<SideBar
-					artists={artists}
 					categoriesList={sortedCategoriesList}
+					initialsAndArtists={artists}
 					productsList={productsList}
 					setFilteredProductList={setFilteredProductList}
 				/>
