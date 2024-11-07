@@ -1,0 +1,54 @@
+:root {
+	--HEADER-FONT-SIZE: 3rem;
+}
+
+#store-header {
+	grid-row: 1;
+	font-size: var(--HEADER-FONT-SIZE);
+	padding: 0.5rem;
+
+	display: flex;
+	background-color: light-dark(var(--TERTIARY-COLOR), var(--SECONDARY-COLOR));
+	justify-content: space-around;
+}
+
+#store-name {
+	font-size: inherit;
+	font-weight: bold;
+	font-style: italic;
+}
+
+#see-cart-button {
+	font-size: inherit;
+	background-color: inherit;
+	border: none;
+	cursor: pointer;
+	position: relative;
+    transition: all 0.5s;
+
+	&:hover {
+		color: var(--QUINARY-COLOR);
+
+		#number-products-cart {
+			background-color: light-dark(
+				var(--TERTIARY-COLOR),
+				var(--SECONDARY-COLOR)
+			);
+		}
+
+        transition: all 0.5s;
+	}
+}
+
+#number-products-cart {
+	z-index: 1;
+	position: absolute;
+	font-size: calc(var(--HEADER-FONT-SIZE) / 2);
+	height: fit-content;
+	width: calc(var(--HEADER-FONT-SIZE) / 2);
+
+	top: 0;
+	right: 0;
+	background-color: light-dark(var(--QUINARY-COLOR), var(--QUINARY-COLOR));
+	border-radius: 50%;
+}
