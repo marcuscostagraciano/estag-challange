@@ -73,17 +73,6 @@ const SideBar = ({
 			>
 				<option value={DEFAULT_SELECT}>All</option>
 				{renderArtistsSelect}
-				{/* {artists.map((artist, index) => (
-					<option value={artist} key={index}>
-						{artist}
-					</option>
-				))}
-				{artists.map((artist) => (
-					<optgroup key={artist} label={artist}>
-						<option value={DEFAULT_SELECT}>All</option>
-					</optgroup>
-				))} */}
-				{/* {artists} */}
 			</select>
 			<button onClick={handleReset}>Reset</button>
 		</aside>
