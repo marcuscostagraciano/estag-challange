@@ -29,6 +29,7 @@ const Main = () => {
 	const productsStatus = useSelector(getProductsStatus);
 
 	const [filteredProductList, setFilteredProductList] = useState([]);
+	const [sortedCategoriesList, setSortedCategoriesList] = useState([]);
 	const [artists, setArtists] = useState([]);
 
 	useEffect(() => {
@@ -36,15 +37,26 @@ const Main = () => {
 			dispatch(asyncFetchCategories());
 		if (productsStatus === THUNK_STATUS.IDLE)
 			dispatch(asyncFetchProducts());
+		if (categoriesList) {
+			const nameSortedCategories = [...categoriesList].sort(
+				(catA, catB) => catA.name.localeCompare(catB.name)
+			);
+			setSortedCategoriesList(nameSortedCategories);
+		}
 		if (productsList) {
 			setFilteredProductList(productsList);
-
 			const artistsSet = new Set(
 				productsList.map((product) => product.artist)
 			);
 			setArtists([...artistsSet].sort());
 		}
-	}, [categoriesStatus, productsStatus, productsList, dispatch]);
+	}, [
+		categoriesStatus,
+		productsStatus,
+		categoriesList,
+		productsList,
+		dispatch,
+	]);
 
 	const renderProductList = filteredProductList.map((product, index) => (
 		<ProductCard product={product} key={index} />
@@ -55,7 +67,7 @@ const Main = () => {
 			<main>
 				<SideBar
 					artists={artists}
-					categoriesList={categoriesList}
+					categoriesList={sortedCategoriesList}
 					productsList={productsList}
 					setFilteredProductList={setFilteredProductList}
 				/>
