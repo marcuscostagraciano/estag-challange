@@ -37,10 +37,13 @@ const SideBar = ({
 	return (
 		<aside className="sidebar">
 			<h1>Filtros</h1>
+			<label htmlFor="genre-selection">Genres</label>
 			<select
 				defaultValue={DEFAULT_SELECT}
 				onChange={handleOnChange}
 				ref={categoryFilterRef}
+				id="genre-selection"
+				name="genre-selection"
 			>
 				<option value={DEFAULT_SELECT}>All</option>
 				{categoriesList.map((cat) => (
@@ -49,10 +52,13 @@ const SideBar = ({
 					</option>
 				))}
 			</select>
+			<label htmlFor="artist-selection">Artists</label>
 			<select
 				defaultValue={DEFAULT_SELECT}
 				onChange={handleOnChange}
 				ref={artistRef}
+				id="artist-selection"
+				name="artist-selection"
 			>
 				<option value={DEFAULT_SELECT}>All</option>
 				{artists.map((artist, index) => (
