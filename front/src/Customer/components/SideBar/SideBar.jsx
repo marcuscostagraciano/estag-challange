@@ -1,16 +1,57 @@
-import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
+
 import "./SideBar.css";
 
-const SideBar = ({
-	initialsAndArtists,
-	categoriesList,
-	setFilteredProductList,
-	productsList,
-}) => {
+import { THUNK_STATUS } from "../../../utils/constants";
+
+import {
+	asyncFetchCategories,
+	getCategoriesStatus,
+	selectAllCategories,
+} from "../../../features/categories/categoriesSlice";
+
+const SideBar = ({ setFilteredProductList, productsList }) => {
 	const DEFAULT_SELECT = "default";
+
+	const dispatch = useDispatch();
+	const categoriesList = useSelector(selectAllCategories);
+	const categoriesStatus = useSelector(getCategoriesStatus);
+
 	const categoryFilterRef = useRef();
 	const artistRef = useRef();
-	console.log({ initialsAndArtists });
+
+	const [initialsAndArtists, setInitialsAndArtists] = useState([]);
+	const [sortedCategoriesList, setSortedCategoriesList] = useState([]);
+
+	useEffect(() => {
+		if (categoriesStatus === THUNK_STATUS.IDLE)
+			dispatch(asyncFetchCategories());
+
+		if (categoriesList) {
+			const nameSortedCategories = [...categoriesList].sort(
+				(catA, catB) => catA.name.localeCompare(catB.name)
+			);
+			setSortedCategoriesList(nameSortedCategories);
+		}
+
+		if (productsList) {
+			const sortedArtistsList = [
+				...new Set(productsList.map((product) => product.artist)),
+			].sort();
+			const artistsInitials = [
+				...new Set(sortedArtistsList.map((artist) => artist[0])),
+			];
+			const initialsAndArtists = artistsInitials.map((initial) => ({
+				initial,
+				artists: sortedArtistsList.filter((artist) =>
+					artist.startsWith(initial)
+				),
+			}));
+
+			setInitialsAndArtists(initialsAndArtists);
+		}
+	}, [categoriesList, categoriesStatus, dispatch, productsList]);
 
 	const handleOnChange = () => {
 		const selectedCategoryCode = categoryFilterRef.current.value;
@@ -57,7 +98,7 @@ const SideBar = ({
 				name="genre-selection"
 			>
 				<option value={DEFAULT_SELECT}>All</option>
-				{categoriesList.map((cat) => (
+				{sortedCategoriesList.map((cat) => (
 					<option value={cat.code} key={cat.code}>
 						{cat.name}
 					</option>
