@@ -1,0 +1,37 @@
+/* Nova Mono */
+@import url("https://fonts.googleapis.com/css2?family=Nova+Mono&display=swap");
+/* Offside */
+@import url("https://fonts.googleapis.com/css2?family=Offside&display=swap");
+
+:root {
+	font-size: 62.5%;
+	color-scheme: light dark;
+
+	--PRIMARY-COLOR: #231942;
+	--SECONDARY-COLOR: #5e548e;
+	--TERTIARY-COLOR: #9f86c0;
+	--QUATERNARY-COLOR: #be95c4;
+	--QUINARY-COLOR: #e0b1cb;
+
+	font-family: "Nova Mono", serif;
+	font-weight: 400;
+	font-style: normal;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.offside-regular {
+	font-family: "Offside", sans-serif;
+	font-weight: 400;
+	font-style: normal;
+}
+
+.nova-mono-regular {
+	font-family: "Nova Mono", serif;
+	font-weight: 400;
+	font-style: normal;
+}
