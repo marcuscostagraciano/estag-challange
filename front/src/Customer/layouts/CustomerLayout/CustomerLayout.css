@@ -24,7 +24,7 @@
 	border: none;
 	cursor: pointer;
 	position: relative;
-    transition: all 0.5s;
+	transition: all var(--TRANSITION-DURATION);
 
 	&:hover {
 		color: var(--QUINARY-COLOR);
@@ -34,18 +34,21 @@
 				var(--TERTIARY-COLOR),
 				var(--SECONDARY-COLOR)
 			);
+			color: light-dark(#000, #fff);
 		}
 
-        transition: all 0.5s;
+		transition: all var(--TRANSITION-DURATION);
 	}
 }
 
 #number-products-cart {
 	z-index: 1;
+	color: #000;
 	position: absolute;
 	font-size: calc(var(--HEADER-FONT-SIZE) / 2);
+	padding: 0 calc(var(--HEADER-FONT-SIZE) / 16);
 	height: fit-content;
-	width: calc(var(--HEADER-FONT-SIZE) / 2);
+	width: fit-content;
 
 	top: 0;
 	right: 0;
