@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 import "./Main.css";
+
 import Footer from "../../components/Footer/Footer";
-
-import {
-	getProductsStatus,
-	selectAllProducts,
-} from "../../../features/products/productsSlice";
-
-import ProductCard from "../../components/ProductCard/ProductCard";
 import SideBar from "../../components/SideBar/SideBar";
-import { Outlet } from "react-router-dom";
+import ProductCard from "../../components/ProductCard/ProductCard";
+
+import { selectAllProducts } from "../../../features/products/productsSlice";
 
 const Main = () => {
 	const productsList = useSelector(selectAllProducts);
