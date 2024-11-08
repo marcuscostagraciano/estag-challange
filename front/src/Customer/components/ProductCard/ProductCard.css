@@ -14,20 +14,20 @@
 
 	position: relative;
 	text-align: center;
+
+	&:hover {
+		cursor: pointer;
+
+		.marquee {
+			animation: marquee var(--MARQUEE-DURATION) linear infinite;
+		}
+	}
 }
 
 .product-image {
 	height: var(--IMAGE-SIZE);
 	width: var(--IMAGE-SIZE);
 	object-fit: cover;
-}
-
-.product-card:hover {
-	cursor: pointer;
-
-	.marquee {
-		animation: marquee var(--MARQUEE-DURATION) linear infinite;
-	}
 }
 
 .product-card:has(~ .product-card:hover),
