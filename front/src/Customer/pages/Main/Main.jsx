@@ -1,35 +1,25 @@
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import { THUNK_STATUS } from "../../../utils/constants";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import "./Main.css";
 import Footer from "../../components/Footer/Footer";
 
 import {
-	asyncFetchProducts,
 	getProductsStatus,
 	selectAllProducts,
 } from "../../../features/products/productsSlice";
 
 import ProductCard from "../../components/ProductCard/ProductCard";
 import SideBar from "../../components/SideBar/SideBar";
+import { Outlet } from "react-router-dom";
 
 const Main = () => {
-	const dispatch = useDispatch();
-
 	const productsList = useSelector(selectAllProducts);
-
-	const productsStatus = useSelector(getProductsStatus);
-
 	const [filteredProductList, setFilteredProductList] = useState([]);
 
 	useEffect(() => {
-		if (productsStatus === THUNK_STATUS.IDLE)
-			dispatch(asyncFetchProducts());
-
 		if (productsList) setFilteredProductList(productsList);
-	}, [productsStatus, productsList, dispatch]);
+	}, [productsList]);
 
 	const renderProductList = filteredProductList.map((product, index) => (
 		<ProductCard product={product} key={index} />
@@ -37,6 +27,7 @@ const Main = () => {
 
 	return (
 		<>
+			<Outlet />
 			<main>
 				<SideBar
 					productsList={productsList}

@@ -52,6 +52,11 @@
 	align-items: center;
 }
 
+.product-link {
+	color: inherit;
+	text-decoration: none;
+}
+
 .product-name {
 	font-weight: bold;
 	max-width: var(--IMAGE-SIZE);
