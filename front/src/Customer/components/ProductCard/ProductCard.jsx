@@ -1,5 +1,5 @@
 import "./ProductCard.css";
-const NAME_MARQUEE_LENGTH = 20;
+const NAME_MARQUEE_LENGTH = 23;
 const ARTIST_MARQUEE_LENGTH = 22;
 
 const ProductCard = ({ product }) => {
@@ -18,7 +18,9 @@ const ProductCard = ({ product }) => {
 				<span
 					className={
 						"product-name offside-regular" +
-						(NAME_MARQUEE_LENGTH < product.name.length ? " marquee" : "")
+						(NAME_MARQUEE_LENGTH < product.name.length
+							? " marquee"
+							: "")
 					}
 				>
 					{product.name}
@@ -26,7 +28,9 @@ const ProductCard = ({ product }) => {
 				<span
 					className={
 						"product-artist" +
-						(ARTIST_MARQUEE_LENGTH < product.artist.length ? " marquee" : "")
+						(ARTIST_MARQUEE_LENGTH < product.artist.length
+							? " marquee"
+							: "")
 					}
 				>
 					{product.artist}
