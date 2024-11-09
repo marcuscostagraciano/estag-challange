@@ -2,7 +2,7 @@ import './Footer.css'
 
 const Footer = () => {
   return (
-    <footer>Footer</footer>
+    <footer id='store-footer'>Footer</footer>
   )
 }
 
