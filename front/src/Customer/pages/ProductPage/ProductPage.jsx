@@ -13,12 +13,14 @@ const ProductPage = () => {
 
 	return (
 		<>
-			<img
-				src={selectedProduct?.img_url ?? ""}
-				alt={"Image of '" + selectedProduct?.name + "' album"}
-				id="product-image"
-			/>
-			ProductPage
+			<main>
+				<img
+					src={selectedProduct?.img_url ?? ""}
+					alt={"Image of '" + selectedProduct?.name + "' album"}
+					id="product-image"
+				/>
+				ProductPage
+			</main>
 		</>
 	);
 };

@@ -1,5 +1,11 @@
+main {
+    display: flex;
+}
+
 #product-image {
     height: 91vh;
     width: 33vw;
     object-fit: cover;
+
+    border-right: solid burlywood;
 }

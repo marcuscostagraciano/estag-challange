@@ -32,6 +32,7 @@ body {
 	height: 100vh;
 	display: grid;
 	grid-template-rows: repeat(3, 1fr);
+	background-color: light-dark(var(--SECONDARY-COLOR), var(--PRIMARY-COLOR));
 }
 
 .offside-regular {

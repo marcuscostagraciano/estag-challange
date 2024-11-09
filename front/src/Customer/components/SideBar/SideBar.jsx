@@ -116,7 +116,7 @@ const SideBar = ({ setFilteredProductList, productsList }) => {
 
 	return (
 		<aside className="sidebar">
-			<h1>Filtros</h1>
+			<h1>Filters</h1>
 			<label htmlFor="genre-selection">Genres</label>
 			<select
 				defaultValue={DEFAULT_SELECT}
@@ -170,7 +170,9 @@ const SideBar = ({ setFilteredProductList, productsList }) => {
 				</label>
 			</section>
 
-			<button onClick={handleReset}>Reset</button>
+			<button onClick={handleReset} id="reset-filter-button">
+				Reset
+			</button>
 		</aside>
 	);
 };
