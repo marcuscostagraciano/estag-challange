@@ -7,7 +7,7 @@ main {
 	grid-column: 4 / -2;
 
 	display: flex;
-	column-gap: 5rem;
+	column-gap: 2rem;
 	flex-wrap: wrap;
 	background-color: light-dark(var(--SECONDARY-COLOR), var(--TERTIARY-COLOR));
 }
