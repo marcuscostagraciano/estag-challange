@@ -1,6 +1,7 @@
 :root {
 	--MARQUEE-DURATION: 4s;
 	--IMAGE-SIZE: 200px;
+	--PRODUCT-INFO-SIZE: calc(var(--IMAGE-SIZE) / 4);
 	--LATERAL-PADDING-SIZE: 0.5rem;
 }
 
@@ -9,8 +10,9 @@
 	background-color: light-dark(var(--TERTIARY-COLOR), var(--SECONDARY-COLOR));
 	display: flex;
 	flex-direction: column;
-	transition: calc(var(--TRANSITION-DURATION) * 2);
+	height: calc(var(--IMAGE-SIZE) + var(--PRODUCT-INFO-SIZE));
 	margin: 1rem;
+	transition: calc(var(--TRANSITION-DURATION) * 2);
 
 	position: relative;
 	text-align: center;
@@ -41,7 +43,7 @@
 	max-width: var(--IMAGE-SIZE);
 	background-color: light-dark(var(--QUATERNARY-COLOR), var(--PRIMARY-COLOR));
 	width: 100%;
-	height: calc(var(--IMAGE-SIZE) / 4);
+	height: var(--PRODUCT-INFO-SIZE);
 
 	white-space: nowrap;
 	overflow: hidden;
