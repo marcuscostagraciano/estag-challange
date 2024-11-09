@@ -1,28 +1,15 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useLoaderData } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import "./ProductPage.css";
 
-import {
-	asyncFetchProducts,
-	selectAllProducts,
-	getProductsStatus,
-} from "../../../features/products/productsSlice";
-import { THUNK_STATUS } from "../../../utils/constants";
+import { selectAllProducts } from "../../../features/products/productsSlice";
 
 const ProductPage = () => {
-	const dispatch = useDispatch();
-
 	const { productID } = useLoaderData();
-	const productsStatus = useSelector(getProductsStatus);
 	const selectedProduct = [...useSelector(selectAllProducts)].find(
 		(product) => product.code == productID
 	);
-
-	useEffect(() => {
-		if (productsStatus == THUNK_STATUS.IDLE) dispatch(asyncFetchProducts());
-	}, [productsStatus]);
 
 	return (
 		<>

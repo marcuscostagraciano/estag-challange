@@ -12,6 +12,7 @@ import { THUNK_STATUS } from "../../../utils/constants";
 import { selectAllProductsFromCart } from "../../../features/cart/cartSlice";
 import {
 	asyncFetchProducts,
+	selectAllProducts,
 	getProductsStatus,
 } from "../../../features/products/productsSlice";
 
@@ -19,12 +20,13 @@ const CustomerLayout = (props) => {
 	const dispatch = useDispatch();
 
 	const cartProducts = useSelector(selectAllProductsFromCart);
+	const productsList = useSelector(selectAllProducts);
 	const productsStatus = useSelector(getProductsStatus);
 
 	useEffect(() => {
-		if (productsStatus === THUNK_STATUS.IDLE)
+		if (productsStatus === THUNK_STATUS.IDLE && !productsList?.length)
 			dispatch(asyncFetchProducts());
-	}, [productsStatus, dispatch]);
+	}, [productsList, productsStatus, dispatch]);
 
 	return (
 		<>
