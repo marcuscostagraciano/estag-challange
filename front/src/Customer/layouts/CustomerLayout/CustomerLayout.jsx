@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import "../../assets/base.css";
 import "./CustomerLayout.css";
 
+import Footer from "../../components/Footer/Footer";
+
 import { THUNK_STATUS } from "../../../utils/constants";
+
 import { selectAllProductsFromCart } from "../../../features/cart/cartSlice";
 import {
 	asyncFetchProducts,
@@ -44,6 +47,7 @@ const CustomerLayout = (props) => {
 				</span>
 			</header>
 			<Outlet />
+			<Footer />
 		</>
 	);
 };

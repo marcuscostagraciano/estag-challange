@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 import "./Main.css";
 
-import Footer from "../../components/Footer/Footer";
 import SideBar from "../../components/SideBar/SideBar";
 import ProductCard from "../../components/ProductCard/ProductCard";
 
@@ -32,7 +31,6 @@ const Main = () => {
 				/>
 				<section className="products-list">{renderProductList}</section>
 			</main>
-			<Footer />
 		</>
 	);
 };
